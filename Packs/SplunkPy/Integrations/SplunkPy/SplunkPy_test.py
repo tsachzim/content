@@ -474,20 +474,20 @@ def test_create_mapping_dict():
 
 
 @pytest.mark.parametrize('cache_object, output', [
-    (splunk.Cache(not_yet_enriched_notables=[splunk.Notable({'event_id': '1'})]), False),
+    (splunk.Cache(not_yet_submitted_notables=[splunk.Notable({'event_id': '1'})]), False),
     (splunk.Cache(), True)
 ])
 def test_is_done_enriching(cache_object, output):
     splunk.ENABLED_ENRICHMENTS = [splunk.DRILLDOWN_ENRICHMENT]
-    assert splunk.is_done_enriching(cache_object) is output
+    assert splunk.is_done_submitting(cache_object) is output
 
 
 @pytest.mark.parametrize('integration_context, output', [
     ({splunk.INCIDENTS: ['incident']}, ['incident']),
-    ({splunk.NOT_YET_ENRICHED_NOTABLES: []}, []),
+    ({splunk.INCIDENTS: []}, []),
     ({}, [])
 ])
-def test_get_incidents_for_mapping(integration_context, output, mocker):
+def test_fetch_incidents_for_mapping(integration_context, output, mocker):
     mocker.patch.object(demisto, 'info')
     mocker.patch.object(demisto, 'incidents')
     splunk.fetch_incidents_for_mapping(integration_context)
@@ -512,10 +512,10 @@ def test_reset_enriching_fetch_mechanism(mocker):
 ])
 def test_is_enrichment_exceeding_timeout(drilldown_creation_time, asset_creation_time, enrichment_timeout, output):
     splunk.ENABLED_ENRICHMENTS = [splunk.DRILLDOWN_ENRICHMENT, splunk.ASSET_ENRICHMENT]
-    enrichment = splunk.Enrichment(splunk.Notable({splunk.EVENT_ID: 'id'}))
-    enrichment.drilldown_job.creation_time = drilldown_creation_time
-    enrichment.asset_job.creation_time = asset_creation_time
-    assert splunk.is_enrichment_exceeding_timeout(enrichment, enrichment_timeout) is output
+    notable = splunk.Notable({splunk.EVENT_ID: 'id'})
+    notable.enrichments.append(splunk.Enrichment(splunk.DRILLDOWN_ENRICHMENT, creation_time=drilldown_creation_time))
+    notable.enrichments.append(splunk.Enrichment(splunk.ASSET_ENRICHMENT, creation_time=asset_creation_time))
+    assert splunk.is_enrichment_exceeding_timeout(notable, enrichment_timeout) is output
 
 
 @pytest.mark.parametrize('cache_object, last_run, output', [
@@ -604,48 +604,6 @@ def test_build_drilldown_search(notable_data, search, raw, expected_search, exc)
 ])
 def test_get_fields_query_part(notable_data, prefix, fields, query_part):
     assert splunk.get_fields_query_part(notable_data, prefix, fields) == query_part
-
-
-def test_differentiate_notables():
-    not_yet_enriched_notable = splunk.Notable({splunk.EVENT_ID: '1'})
-    enriched_notable = splunk.Notable({splunk.EVENT_ID: '1'})
-    enriched_notable.status = splunk.NotableStatus.ENRICHED
-    failed_notable = splunk.Notable({splunk.EVENT_ID: '1'})
-    failed_notable.status = splunk.NotableStatus.CREATED_INCIDENT_ENRICH_FAILURE
-    notables = [enriched_notable, not_yet_enriched_notable, failed_notable]
-    enriched_notables, not_yet_enriched_notables, failed_notables = splunk.differentiate_notables(notables)
-    assert enriched_notables == [enriched_notable]
-    assert not_yet_enriched_notables == [not_yet_enriched_notable]
-    assert failed_notables == [failed_notable]
-
-
-def test_differentiate_enrichments():
-    not_yet_enriched = splunk.Enrichment(splunk.Notable({splunk.EVENT_ID: '1'}), [splunk.DRILLDOWN_ENRICHMENT])
-    done_enriching = splunk.Enrichment(splunk.Notable({splunk.EVENT_ID: '2'}), [splunk.DRILLDOWN_ENRICHMENT])
-    done_enriching.status = splunk.EnrichmentStatus.DONE_ENRICHING
-    done_handling = splunk.Enrichment(splunk.Notable({splunk.EVENT_ID: '3'}), [splunk.DRILLDOWN_ENRICHMENT])
-    done_handling.status = splunk.EnrichmentStatus.DONE_HANDLING
-    exceeding_timeout = splunk.Enrichment(splunk.Notable({splunk.EVENT_ID: '4'}), [splunk.DRILLDOWN_ENRICHMENT])
-    exceeding_timeout.status = splunk.EnrichmentStatus.EXCEEDED_TIMEOUT
-    enrichments = [not_yet_enriched, done_enriching, done_handling, exceeding_timeout]
-    handled_enrichments, open_enrichments = splunk.differentiate_enrichments(enrichments)
-    assert handled_enrichments == [done_handling, exceeding_timeout]
-    assert open_enrichments == [not_yet_enriched, done_enriching]
-
-
-@pytest.mark.parametrize('enrichment, splunk_job', [
-    (splunk.Enrichment(splunk.Notable({splunk.EVENT_ID: 'id'})), {}),
-    (splunk.Enrichment(splunk.Notable({splunk.EVENT_ID: 'id'})), {'sid': 'sid'}),
-])
-def test_maintain_enrichment_metadata(enrichment, splunk_job):
-    splunk.ENABLED_ENRICHMENTS = [splunk.DRILLDOWN_ENRICHMENT]
-    splunk.maintain_enrichment_metadata(enrichment, splunk_job, splunk.DRILLDOWN_ENRICHMENT)
-    if splunk_job:
-        assert enrichment.drilldown_job.creation_time
-        assert enrichment.drilldown_job.id
-    else:
-        assert enrichment.drilldown_job.status == splunk.JobStatus.FAILED
-        assert not enrichment.notable.data[splunk.SUCCESSFUL_DRILLDOWN_ENRICHMENT]
 
 
 NOTABLE = {'rule_name': '', '': '', 'rule_title': '', 'security_domain': '', 'index': '', 'rule_description': '',
