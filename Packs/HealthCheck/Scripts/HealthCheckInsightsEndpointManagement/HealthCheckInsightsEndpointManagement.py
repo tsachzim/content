@@ -6,6 +6,15 @@ import pandas as pd
 from datetime import UTC
 
 
+def printDFtoMarkdown(result, title):
+    dict_result = result.to_dict(orient="records")
+    md = tableToMarkdown(title, dict_result)
+    results = CommandResults(
+        readable_output=md,
+    )
+    return_results(results)
+
+
 def execute_xql_query(query, limit=1000, max_polls=30):
     # Execute XQL query and return results#
 
@@ -95,9 +104,6 @@ def query_content_autoupdate_disabled(df):
     df_filtered = df[df["content_auto_update"].isin(["DISABLED", "content_auto_update_0", 0])]
 
     if len(df_filtered) == 0:
-        # print("No endpoints found with content_auto_update = DISABLED")
-        # print(f"\nFound content_auto_update values in dataset:")
-        # print(df["content_auto_update"].value_counts().to_string())
         return_results("No endpoints found with content_auto_update = DISABLED")
         return None
 
@@ -144,11 +150,6 @@ def query_connection_lost_endpoints(df):
             "last_seen": last_seen_dt.dt.strftime("%Y-%m-%d %H:%M:%S"),
         }
     ).sort_values("daysNotSeen", ascending=False, ignore_index=True)
-
-    result_list = result.to_dict(orient="records")
-
-    # Example of how to print the first record
-    return_results(result_list)
     return result
 
 
@@ -156,27 +157,7 @@ from datetime import datetime
 
 
 def query_disconnected_endpoints_by_type_optimized(df, days_threshold=20):
-    """
-    Query: Find disconnected workstations and servers not seen for >= days_threshold.
-
-    This function is an optimized version that improves performance by:
-    1. Reducing memory usage by avoiding intermediate DataFrame copies.
-    2. Using vectorized operations for calculations and filtering.
-    3. Simplifying the filtering and splitting logic.
-
-    Args:
-        df (pd.DataFrame): DataFrame containing endpoint data. Expected columns include
-                           'endpoint_status', 'last_seen', 'endpoint_type', 'endpoint_name'.
-        days_threshold (int): Minimum days not seen (default: 20).
-
-    Returns:
-        tuple: (workstations_df, servers_df) - Two DataFrames with columns [name, type, daysNotSeen, last_seen].
-    """
-    # Use timezone-aware UTC time for consistency, matching XSIAM's standard.
-    # Calculate this once to ensure consistency across the entire operation.
     current_time_utc = pd.to_datetime(datetime.now(UTC))
-
-    # --- Start of Optimization ---
 
     # 1. Directly filter for relevant endpoint types and status first.
     # This reduces the size of the DataFrame for subsequent calculations.
@@ -186,7 +167,7 @@ def query_disconnected_endpoints_by_type_optimized(df, days_threshold=20):
     # 2. Calculate 'daysNotSeen' only on the smaller, filtered DataFrame.
     # Using pd.to_datetime is more robust for timestamp calculations.
     last_seen_dt = pd.to_datetime(df_filtered["last_seen"], unit="ms", utc=True)
-    days_not_seen = (current_time_utc - last_seen_dt).dt.total_seconds() / (24 * 60 * 60)
+    days_not_seen = (current_time_utc - last_seen_dt).dt.days
 
     # 3. Create the final DataFrame in a single step and apply the final time filter.
     # This avoids creating multiple intermediate copies.
@@ -195,7 +176,7 @@ def query_disconnected_endpoints_by_type_optimized(df, days_threshold=20):
             "name": df_filtered["endpoint_name"],
             "type": df_filtered["endpoint_type"],
             "daysNotSeen": days_not_seen,
-            "last_seen": df_filtered["last_seen"],
+            "last_seen": last_seen_dt.dt.strftime("%Y-%m-%d %H:%M:%S"),
         }
     )
 
@@ -213,51 +194,45 @@ def query_disconnected_endpoints_by_type_optimized(df, days_threshold=20):
 # Get query from args and limit
 query = demisto.args().get("query", "dataset = endpoints | limit 100")
 
-# Execute query
+# Execute Main Endpoints dataset query
 
-demisto.info(f"Running query: {query}")
 endpoints_data = execute_xql_query(query)
 
-# Convert to DataFrame ONCE - all queries will use this
+# Convert to DataFrame ONCE - fir all queries usage
 df = pd.DataFrame(endpoints_data)
 return_results(f"DataFrame created with {len(df)} rows and {len(df.columns)} columns\n")
 
 # Execute Query 1: Inventory by OS
-
-return_results("XQL: dataset = endpoints | comp count() as total by platform, operating_system, os_version | sort desc total\n")
-
-result1 = query_inventory_by_os(df)
-return_results(result1.to_string(index=False))
+# Translate "XQL: dataset = endpoints | comp count() as total by platform, operating_system, os_version | sort desc total\n")
+result_query_1 = query_inventory_by_os(df)
+printDFtoMarkdown(result_query_1, "Count endpoints grouped by platform, OS, and version")
+# return_results(result1.to_string(index=False))
 
 
 # Execute Query 2: Content auto-update disabled
 
-# print("Query 2: Endpoints with Content Auto-Update Disabled by Prevention Policy")
-
-# print(
+# Translate
 # "XQL: dataset = endpoints | filter content_auto_update = ENUM.DISABLED | comp count() as total by assigned_prevention_policy\n"
-# )
+result_query_2 = query_content_autoupdate_disabled(df)
 
-result2 = query_content_autoupdate_disabled(df)
-
-if result2 is not None:
-    return_results(result2.to_string(index=False))
-    return_results(f"Total endpoints with auto-update disabled: {result2['total'].sum()}")
-
-    # Save Query 2 results
-    # output_file2 = 'content_autoupdate_disabled_by_policy.csv'
-    # result2.to_csv(output_file2, index=False)
-    # print(f"\n✓ Results saved to: {output_file2}")
+if result_query_2 is not None:
+    printDFtoMarkdown(
+        result_query_2,
+        "Count endpoints with content auto-update disabled, grouped by prevention policy",
+    )
+    # return_results(result_query_2.to_string(index=False))
+    # return_results(
+    #     f"Total endpoints with auto-update disabled: {result_query_2['total'].sum()}"
+    # )
 
 
 # execute query 3, 6:
 
 workstations, servers = query_disconnected_endpoints_by_type_optimized(df, 20)
 if workstations is not None:
-    return_results(workstations.to_string(index=False))
+    printDFtoMarkdown(workstations, "Disconnected Workstations:")
 if servers is not None:
-    return_results(servers.to_string(index=False))
-    return_results(f"Total endpoints with auto-update disabled: {result2['total'].sum()}")
+    printDFtoMarkdown(servers, "Disconnected Servers:")
 
 
 # execute query 4
@@ -265,15 +240,5 @@ if servers is not None:
 # Query 4: Connection lost endpoints
 connection_lost = query_connection_lost_endpoints(df)
 if connection_lost is not None:
-    return_results(connection_lost.to_string(index=False))
-output4 = f"""{"=" * 100}
-Query 4: Endpoints with Status CONNECTION_LOST
-{"=" * 100}
-XQL: dataset = endpoints | filter endpoint_status in (ENUM.CONNECTION_LOST)
-     | alter daysNotSeen = timestamp_diff(current_time(), last_seen, "DAY")
-     | fields endpoint_name as name, endpoint_type as type, daysNotSeen, last_seen
-
-{connection_lost.to_string(index=False) if len(connection_lost) > 0 else "No endpoints with CONNECTION_LOST status found"}
-{"-" * 100}
-✓ Results saved to: connection_lost_endpoints.csv
-"""
+    # return_results(connection_lost.to_string(index=False))
+    printDFtoMarkdown(connection_lost, "Connection lost endpoints")
