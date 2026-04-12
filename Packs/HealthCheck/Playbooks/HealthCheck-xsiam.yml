@@ -1,0 +1,556 @@
+contentitemexportablefields:
+  contentitemfields: {}
+description: HealthCheck XSIAM main playbook-tsach.
+id: HealthCheck
+inputSections:
+- description: Generic group for inputs
+  inputs: []
+  name: General (Inputs group)
+inputs: []
+name: HealthCheck
+outputSections:
+- description: Generic group for outputs
+  name: General (Outputs group)
+  outputs: []
+outputs: []
+starttaskid: "0"
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: d9dca192-1281-49cd-8e5a-f2fea80a300f
+      iscommand: false
+      name: ""
+      version: -1
+      description: ''
+    taskid: d9dca192-1281-49cd-8e5a-f2fea80a300f
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 695,
+          "y": 50
+        }
+      }
+  "6":
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "17"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      entryID:
+        simple: "0"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Read the installedpacks.json. \n\nCount and get packs names"
+      id: aed210a7-6d69-4420-84df-ccc4745c0f79
+      iscommand: false
+      name: Installed Packs
+      script: HealthCheckInstalledPacks
+      type: regular
+      version: -1
+    taskid: aed210a7-6d69-4420-84df-ccc4745c0f79
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 915
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "17"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Trend graph for incidents created per day
+      id: 4fe2125d-469f-484d-8ea5-b4d13014f392
+      iscommand: false
+      name: Integrations instances
+      script: HealthCheckIntegrations
+      type: regular
+      version: -1
+    taskid: 4fe2125d-469f-484d-8ea5-b4d13014f392
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 915
+        }
+      }
+  "8":
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "44"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: In this section, collect information about the system
+      id: f735afba-6990-4463-8dae-fbe36116e16a
+      iscommand: false
+      name: System Details - N/A
+      type: title
+      version: -1
+    taskid: f735afba-6990-4463-8dae-fbe36116e16a
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 695,
+          "y": 220
+        }
+      }
+  "12":
+    continueonerrortype: ""
+    id: "12"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "7"
+      - "6"
+      - "37"
+      - "41"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: In this section, collect information about Packs and Integrations
+      id: 222cdabb-d1c7-482f-8e4f-7f75b6c465ee
+      iscommand: false
+      name: Packs and Integrations
+      type: title
+      version: -1
+    taskid: 222cdabb-d1c7-482f-8e4f-7f75b6c465ee
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 695,
+          "y": 745
+        }
+      }
+  "17":
+    continueonerrortype: ""
+    id: "17"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "18"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: In this section, collect information about the Playbooks
+      id: f15f7621-8f30-4c74-8f9e-f05c7b0a3a7e
+      iscommand: false
+      name: Playbook Analysis
+      type: title
+      version: -1
+    taskid: f15f7621-8f30-4c74-8f9e-f05c7b0a3a7e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 695,
+          "y": 1100
+        }
+      }
+  "18":
+    continueonerrortype: ""
+    id: "18"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "20"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      Thresholds:
+        simple: ${Health Check Thresholds.Playbooks}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Parsing playbooks
+      id: 080a0f6c-01ff-42bb-8c95-66f63cfc2d57
+      iscommand: false
+      name: Analyze playbooks
+      script: HealthCheckPlaybookAnalysis
+      type: regular
+      version: -1
+    taskid: 080a0f6c-01ff-42bb-8c95-66f63cfc2d57
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 695,
+          "y": 1270
+        }
+      }
+  "20":
+    continueonerrortype: ""
+    id: "20"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "22"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Number of dropped alerts
+      id: 7e767052-7220-4095-89e5-139a8e8d4516
+      iscommand: false
+      name: Dropped Alerts - N/A
+      type: title
+      version: -1
+    taskid: 7e767052-7220-4095-89e5-139a8e8d4516
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 695,
+          "y": 1455
+        }
+      }
+  "22":
+    continueonerrortype: ""
+    id: "22"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "23"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Reports on common indicators
+      id: 0f9a01ab-7266-4352-8c28-857ca3837e29
+      iscommand: false
+      name: Analyze Indicators - N/A
+      type: title
+      version: -1
+    taskid: 0f9a01ab-7266-4352-8c28-857ca3837e29
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 695,
+          "y": 1625
+        }
+      }
+  "23":
+    continueonerrortype: ""
+    id: "23"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "24"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Writing Health Check Conclusions
+      id: 13254f3e-96c6-4af5-8d55-863809c1827d
+      iscommand: false
+      name: Conclusions
+      type: title
+      version: -1
+    taskid: 13254f3e-96c6-4af5-8d55-863809c1827d
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 695,
+          "y": 1795
+        }
+      }
+  "24":
+    continueonerrortype: ""
+    id: "24"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "25"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      columns:
+        simple: category,severity,description,resolution
+      context_path:
+        simple: HealthCheck.ActionableItems
+      grid_id:
+        simple: healthcheckactionableitems
+      keys:
+        simple: category,severity,description,resolution
+      overwrite:
+        simple: "false"
+      sort_by:
+        simple: severity
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Creates a Grid table from items or key-value pairs.
+      id: 02f80a1c-8f1e-41bd-865e-dbdec8b7f391
+      iscommand: false
+      name: Save to action items table
+      script: SetGridField
+      type: regular
+      version: -1
+    taskid: 02f80a1c-8f1e-41bd-865e-dbdec8b7f391
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 695,
+          "y": 1965
+        }
+      }
+  "25":
+    continueonerrortype: ""
+    id: "25"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Done
+      id: d2bcc26e-9c3d-426f-8ed5-05d430b35c4e
+      iscommand: false
+      name: Done
+      type: title
+      version: -1
+    taskid: d2bcc26e-9c3d-426f-8ed5-05d430b35c4e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 695,
+          "y": 2150
+        }
+      }
+  "37":
+    continueonerrortype: ""
+    id: "37"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "17"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Parsing custom fields to detect indexed fields for risky field types
+      id: 4cde08cd-96da-45ad-8dfb-212e722d535a
+      iscommand: false
+      name: Fields settings - N/A
+      type: title
+      version: -1
+    taskid: 4cde08cd-96da-45ad-8dfb-212e722d535a
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 910,
+          "y": 922.5
+        }
+      }
+  "41":
+    continueonerrortype: ""
+    id: "41"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "17"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Identify custom and detached system alerts type.  \nChecking if 'Auto Extraction' is turned on for:\nExtract from all\nExtract from specific indicators doesn't have any settings."
+      id: 556e0152-76df-4d8b-8385-cfe5366441af
+      iscommand: false
+      name: Types settings - N/A
+      type: title
+      version: -1
+    taskid: 556e0152-76df-4d8b-8385-cfe5366441af
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1340,
+          "y": 922.5
+        }
+      }
+  "43":
+    continueonerrortype: ""
+    id: "43"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "12"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: In this section, collect information about the Server Configuration
+      id: 4a9e3911-96af-41f7-83bd-87cd74b3a627
+      iscommand: false
+      name: Server Configuration - N/A
+      type: title
+      version: -1
+    taskid: 4a9e3911-96af-41f7-83bd-87cd74b3a627
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 695,
+          "y": 575
+        }
+      }
+  "44":
+    continueonerrortype: ""
+    id: "44"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "43"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 9a5fadbb-4b73-4b5b-8564-58359aad1244
+      iscommand: false
+      name: License Data
+      description: "Coleccting license details"
+      script: 'HealthCheckLicenseData'
+      type: regular
+      version: -1
+    taskid: 9a5fadbb-4b73-4b5b-8564-58359aad1244
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 695,
+          "y": 390
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 2160,
+        "width": 1670,
+        "x": 50,
+        "y": 50
+      }
+    }
+  }
+tests:
+- No tests (auto formatted)
+fromversion: 8.10.0
+marketplaces:
+- xsoar_saas
+- xsoar
+
