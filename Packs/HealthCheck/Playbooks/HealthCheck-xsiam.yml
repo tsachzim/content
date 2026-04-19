@@ -1,13 +1,13 @@
-contentitemexportablefields:
-  contentitemfields: {}
+adopted: true
 description: HealthCheck XSIAM main playbook-tsach.
+dirtyInputs: true
 id: HealthCheck
 inputSections:
 - description: Generic group for inputs
   inputs: []
   name: General (Inputs group)
 inputs: []
-name: HealthCheck
+name: HealthCheck-xsiam
 outputSections:
 - description: Generic group for outputs
   name: General (Outputs group)
@@ -24,18 +24,20 @@ tasks:
     nexttasks:
       '#none#':
       - "8"
+      - "45"
     note: false
     quietmode: 0
     separatecontext: false
     skipunavailable: false
     task:
       brand: ""
-      id: d9dca192-1281-49cd-8e5a-f2fea80a300f
+      id: dd90e344-9343-4938-8ca5-df5d8f372f94
       iscommand: false
+      istaskmissingcomponenterrordismissed: false
       name: ""
+      playbooktaskmissingcomponent: null
       version: -1
-      description: ''
-    taskid: d9dca192-1281-49cd-8e5a-f2fea80a300f
+    taskid: dd90e344-9343-4938-8ca5-df5d8f372f94
     timertriggers: []
     type: start
     view: |-
@@ -64,13 +66,15 @@ tasks:
     task:
       brand: ""
       description: "Read the installedpacks.json. \n\nCount and get packs names"
-      id: aed210a7-6d69-4420-84df-ccc4745c0f79
+      id: cc0c5159-234a-41ce-85eb-1539c8ca0261
       iscommand: false
+      istaskmissingcomponenterrordismissed: false
       name: Installed Packs
+      playbooktaskmissingcomponent: null
       script: HealthCheckInstalledPacks
       type: regular
       version: -1
-    taskid: aed210a7-6d69-4420-84df-ccc4745c0f79
+    taskid: cc0c5159-234a-41ce-85eb-1539c8ca0261
     timertriggers: []
     type: regular
     view: |-
@@ -95,14 +99,16 @@ tasks:
     skipunavailable: false
     task:
       brand: ""
-      description: Trend graph for incidents created per day
-      id: 4fe2125d-469f-484d-8ea5-b4d13014f392
+      description: Trend graph for alerts created per day
+      id: 97c0badc-f965-4760-8f3d-5946fab2bb09
       iscommand: false
+      istaskmissingcomponenterrordismissed: false
       name: Integrations instances
+      playbooktaskmissingcomponent: null
       script: HealthCheckIntegrations
       type: regular
       version: -1
-    taskid: 4fe2125d-469f-484d-8ea5-b4d13014f392
+    taskid: 97c0badc-f965-4760-8f3d-5946fab2bb09
     timertriggers: []
     type: regular
     view: |-
@@ -128,12 +134,14 @@ tasks:
     task:
       brand: ""
       description: In this section, collect information about the system
-      id: f735afba-6990-4463-8dae-fbe36116e16a
+      id: 6914845e-ae88-4900-8148-fd51cb69b8a9
       iscommand: false
+      istaskmissingcomponenterrordismissed: false
       name: System Details - N/A
+      playbooktaskmissingcomponent: null
       type: title
       version: -1
-    taskid: f735afba-6990-4463-8dae-fbe36116e16a
+    taskid: 6914845e-ae88-4900-8148-fd51cb69b8a9
     timertriggers: []
     type: title
     view: |-
@@ -162,12 +170,14 @@ tasks:
     task:
       brand: ""
       description: In this section, collect information about Packs and Integrations
-      id: 222cdabb-d1c7-482f-8e4f-7f75b6c465ee
+      id: 569779c7-4f4a-443e-865a-eb5a713851a0
       iscommand: false
+      istaskmissingcomponenterrordismissed: false
       name: Packs and Integrations
+      playbooktaskmissingcomponent: null
       type: title
       version: -1
-    taskid: 222cdabb-d1c7-482f-8e4f-7f75b6c465ee
+    taskid: 569779c7-4f4a-443e-865a-eb5a713851a0
     timertriggers: []
     type: title
     view: |-
@@ -193,12 +203,14 @@ tasks:
     task:
       brand: ""
       description: In this section, collect information about the Playbooks
-      id: f15f7621-8f30-4c74-8f9e-f05c7b0a3a7e
+      id: e90847aa-3ba7-4628-843b-486201b142f7
       iscommand: false
+      istaskmissingcomponenterrordismissed: false
       name: Playbook Analysis
+      playbooktaskmissingcomponent: null
       type: title
       version: -1
-    taskid: f15f7621-8f30-4c74-8f9e-f05c7b0a3a7e
+    taskid: e90847aa-3ba7-4628-843b-486201b142f7
     timertriggers: []
     type: title
     view: |-
@@ -227,13 +239,15 @@ tasks:
     task:
       brand: ""
       description: Parsing playbooks
-      id: 080a0f6c-01ff-42bb-8c95-66f63cfc2d57
+      id: 44378738-e84f-4a33-846e-0cf2411fa287
       iscommand: false
+      istaskmissingcomponenterrordismissed: false
       name: Analyze playbooks
+      playbooktaskmissingcomponent: null
       script: HealthCheckPlaybookAnalysis
       type: regular
       version: -1
-    taskid: 080a0f6c-01ff-42bb-8c95-66f63cfc2d57
+    taskid: 44378738-e84f-4a33-846e-0cf2411fa287
     timertriggers: []
     type: regular
     view: |-
@@ -259,12 +273,14 @@ tasks:
     task:
       brand: ""
       description: Number of dropped alerts
-      id: 7e767052-7220-4095-89e5-139a8e8d4516
+      id: 55879b22-6fa2-4f22-8c73-1911c8fbcec3
       iscommand: false
+      istaskmissingcomponenterrordismissed: false
       name: Dropped Alerts - N/A
+      playbooktaskmissingcomponent: null
       type: title
       version: -1
-    taskid: 7e767052-7220-4095-89e5-139a8e8d4516
+    taskid: 55879b22-6fa2-4f22-8c73-1911c8fbcec3
     timertriggers: []
     type: title
     view: |-
@@ -290,12 +306,14 @@ tasks:
     task:
       brand: ""
       description: Reports on common indicators
-      id: 0f9a01ab-7266-4352-8c28-857ca3837e29
+      id: c21647b4-1f34-4916-8c30-8eb9d2cc52e1
       iscommand: false
+      istaskmissingcomponenterrordismissed: false
       name: Analyze Indicators - N/A
+      playbooktaskmissingcomponent: null
       type: title
       version: -1
-    taskid: 0f9a01ab-7266-4352-8c28-857ca3837e29
+    taskid: c21647b4-1f34-4916-8c30-8eb9d2cc52e1
     timertriggers: []
     type: title
     view: |-
@@ -321,12 +339,14 @@ tasks:
     task:
       brand: ""
       description: Writing Health Check Conclusions
-      id: 13254f3e-96c6-4af5-8d55-863809c1827d
+      id: eae12290-1c78-4b5b-819e-efa3dcc001c8
       iscommand: false
+      istaskmissingcomponenterrordismissed: false
       name: Conclusions
+      playbooktaskmissingcomponent: null
       type: title
       version: -1
-    taskid: 13254f3e-96c6-4af5-8d55-863809c1827d
+    taskid: eae12290-1c78-4b5b-819e-efa3dcc001c8
     timertriggers: []
     type: title
     view: |-
@@ -365,13 +385,15 @@ tasks:
     task:
       brand: ""
       description: Creates a Grid table from items or key-value pairs.
-      id: 02f80a1c-8f1e-41bd-865e-dbdec8b7f391
+      id: ea29801d-0e26-4d72-8905-aa91719bc2cf
       iscommand: false
+      istaskmissingcomponenterrordismissed: false
       name: Save to action items table
+      playbooktaskmissingcomponent: null
       script: SetGridField
       type: regular
       version: -1
-    taskid: 02f80a1c-8f1e-41bd-865e-dbdec8b7f391
+    taskid: ea29801d-0e26-4d72-8905-aa91719bc2cf
     timertriggers: []
     type: regular
     view: |-
@@ -394,12 +416,14 @@ tasks:
     task:
       brand: ""
       description: Done
-      id: d2bcc26e-9c3d-426f-8ed5-05d430b35c4e
+      id: 32ce8132-45e0-4c04-8964-3d58e3e0202c
       iscommand: false
+      istaskmissingcomponenterrordismissed: false
       name: Done
+      playbooktaskmissingcomponent: null
       type: title
       version: -1
-    taskid: d2bcc26e-9c3d-426f-8ed5-05d430b35c4e
+    taskid: 32ce8132-45e0-4c04-8964-3d58e3e0202c
     timertriggers: []
     type: title
     view: |-
@@ -424,13 +448,16 @@ tasks:
     skipunavailable: false
     task:
       brand: ""
-      description: Parsing custom fields to detect indexed fields for risky field types
-      id: 4cde08cd-96da-45ad-8dfb-212e722d535a
+      description: Parsing custom fields to detect indexed fields for risky field
+        types
+      id: c1feb5bb-6883-4e78-8636-612a51e685ad
       iscommand: false
+      istaskmissingcomponenterrordismissed: false
       name: Fields settings - N/A
+      playbooktaskmissingcomponent: null
       type: title
       version: -1
-    taskid: 4cde08cd-96da-45ad-8dfb-212e722d535a
+    taskid: c1feb5bb-6883-4e78-8636-612a51e685ad
     timertriggers: []
     type: title
     view: |-
@@ -455,13 +482,17 @@ tasks:
     skipunavailable: false
     task:
       brand: ""
-      description: "Identify custom and detached system alerts type.  \nChecking if 'Auto Extraction' is turned on for:\nExtract from all\nExtract from specific indicators doesn't have any settings."
-      id: 556e0152-76df-4d8b-8385-cfe5366441af
+      description: "Identify custom and detached system alerts type.  \nChecking if
+        'Auto Extraction' is turned on for:\nExtract from all\nExtract from specific
+        indicators doesn't have any settings."
+      id: 9208be68-e14f-41ca-819f-f48fb4e4a747
       iscommand: false
+      istaskmissingcomponenterrordismissed: false
       name: Types settings - N/A
+      playbooktaskmissingcomponent: null
       type: title
       version: -1
-    taskid: 556e0152-76df-4d8b-8385-cfe5366441af
+    taskid: 9208be68-e14f-41ca-819f-f48fb4e4a747
     timertriggers: []
     type: title
     view: |-
@@ -487,12 +518,14 @@ tasks:
     task:
       brand: ""
       description: In this section, collect information about the Server Configuration
-      id: 4a9e3911-96af-41f7-83bd-87cd74b3a627
+      id: 55d6c6b0-1ded-43ac-8118-ba95804f0c15
       iscommand: false
+      istaskmissingcomponenterrordismissed: false
       name: Server Configuration - N/A
+      playbooktaskmissingcomponent: null
       type: title
       version: -1
-    taskid: 4a9e3911-96af-41f7-83bd-87cd74b3a627
+    taskid: 55d6c6b0-1ded-43ac-8118-ba95804f0c15
     timertriggers: []
     type: title
     view: |-
@@ -517,14 +550,16 @@ tasks:
     skipunavailable: false
     task:
       brand: ""
-      id: 9a5fadbb-4b73-4b5b-8564-58359aad1244
+      description: Coleccting license details
+      id: fa4383b8-a8cc-473b-874c-88577dcab365
       iscommand: false
+      istaskmissingcomponenterrordismissed: false
       name: License Data
-      description: "Coleccting license details"
-      script: 'HealthCheckLicenseData'
+      playbooktaskmissingcomponent: null
+      script: HealthCheckLicenseData
       type: regular
       version: -1
-    taskid: 9a5fadbb-4b73-4b5b-8564-58359aad1244
+    taskid: fa4383b8-a8cc-473b-874c-88577dcab365
     timertriggers: []
     type: regular
     view: |-
@@ -532,6 +567,123 @@ tasks:
         "position": {
           "x": 695,
           "y": 390
+        }
+      }
+  "45":
+    continueonerrortype: ""
+    id: "45"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "46"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      dashboard_name:
+        simple: Ingestion/Integration
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Two-stage script that collects dashboard query results for the
+        current user. Stage 1 queries the query center history (last 60 minutes) to
+        get execution_ids. Stage 2 fetches actual query results for each execution_id
+        and stores them by query source name.
+      id: 3c36574d-2396-471d-ae4c-3ce0383d5cfa
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Collect widgets data
+      playbooktaskmissingcomponent: null
+      script: HealthCheckCollect
+      type: regular
+      version: -1
+    taskid: 3c36574d-2396-471d-ae4c-3ce0383d5cfa
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1180,
+          "y": 212.5
+        }
+      }
+  "46":
+    continueonerrortype: ""
+    id: "46"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "47"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      dashboard_name:
+        simple: Issues/Cases
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Two-stage script that collects dashboard query results for the
+        current user. Stage 1 queries the query center history (last 60 minutes) to
+        get execution_ids. Stage 2 fetches actual query results for each execution_id
+        and stores them by query source name.
+      id: b0f69260-d646-4481-a9a8-0b53f6f90b06
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Collect widgets data
+      playbooktaskmissingcomponent: null
+      script: HealthCheckCollect
+      type: regular
+      version: -1
+    taskid: b0f69260-d646-4481-a9a8-0b53f6f90b06
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1180,
+          "y": 390
+        }
+      }
+  "47":
+    continueonerrortype: ""
+    id: "47"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    scriptarguments:
+      dashboard_name:
+        simple: Agent and Asset
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Two-stage script that collects dashboard query results for the
+        current user. Stage 1 queries the query center history (last 60 minutes) to
+        get execution_ids. Stage 2 fetches actual query results for each execution_id
+        and stores them by query source name.
+      id: 4163e03a-1ae9-4194-ad93-0502751977c5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Collect widgets data
+      playbooktaskmissingcomponent: null
+      script: HealthCheckCollect
+      type: regular
+      version: -1
+    taskid: 4163e03a-1ae9-4194-ad93-0502751977c5
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1180,
+          "y": 570
         }
       }
 version: -1
@@ -547,10 +699,7 @@ view: |-
       }
     }
   }
-tests:
-- No tests (auto formatted)
 fromversion: 8.10.0
 marketplaces:
 - xsoar_saas
 - xsoar
-
