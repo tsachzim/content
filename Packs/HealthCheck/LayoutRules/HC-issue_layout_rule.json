@@ -7,9 +7,14 @@
         "filter": {
             "AND": [
                 {
-                    "SEARCH_FIELD": "alert_type",
+                    "SEARCH_FIELD": "domain",
                     "SEARCH_TYPE": "EQ",
-                    "SEARCH_VALUE": "Healthcheck"
+                    "SEARCH_VALUE": "Health"
+                },
+                {
+                    "SEARCH_FIELD": "name",
+                    "SEARCH_TYPE": "CONTAINS",
+                    "SEARCH_VALUE": "Healthcheck Report and BPA diagnostics"
                 }
             ]
         }
