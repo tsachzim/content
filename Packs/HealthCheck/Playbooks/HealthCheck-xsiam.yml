@@ -1,5 +1,5 @@
 adopted: true
-description: HealthCheck XSIAM main playbook-tsach.
+description: HealthCheck XSIAM main playbook.
 dirtyInputs: true
 id: HealthCheck
 inputSections:
@@ -701,5 +701,5 @@ view: |-
   }
 fromversion: 8.10.0
 marketplaces:
-- xsoar_saas
-- xsoar
+- marketplacev2
+- platform
