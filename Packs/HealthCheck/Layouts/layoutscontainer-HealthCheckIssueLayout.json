@@ -31,7 +31,7 @@
                         "minH": 1,
                         "moved": false,
                         "name": "General Purpose Dynamic Section",
-                        "query": "3b4cc7cd-8fd6-4b26-8bff-d1b72af8a16d",
+                        "query": "HealthCheckStart",
                         "queryType": "script",
                         "static": false,
                         "type": "dynamic",
