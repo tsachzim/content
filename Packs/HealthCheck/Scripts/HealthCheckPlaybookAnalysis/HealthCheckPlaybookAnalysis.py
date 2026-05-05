@@ -148,8 +148,10 @@ if multiTasksDetected:
         }
     )
 
+is_platform_xsiam = demisto.demistoVersion().get("platform") == "unified_platform"
 
-findTopUsedPLaybooks(account_name)
+if not is_platform_xsiam:
+    findTopUsedPLaybooks(account_name)
 
 results = CommandResults(
     readable_output="HealthCheckPlaybookAnalysis Done", outputs_prefix="HealthCheck.ActionableItems", outputs=res
