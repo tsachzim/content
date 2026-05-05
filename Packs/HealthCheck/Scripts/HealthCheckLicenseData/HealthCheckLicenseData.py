@@ -4,6 +4,7 @@ from CommonServerPython import *  # noqa: F401
 import json
 import re
 
+
 def get_xsiam_license_data():
     """
     Fetches license and tenant info for XSIAM using the /public_api/v1/system/get_tenant_info endpoint.
@@ -20,11 +21,7 @@ def get_xsiam_license_data():
         contents = res[0].get("Contents", {}).get("response", {})
         details = contents.get("reply", {})
 
-        licenseTypeKey = [
-            key
-            for key, value in details.items()
-            if re.match(r"purchased_xsiam_(?!gb).*$", key)
-        ][0]
+        licenseTypeKey = [key for key, value in details.items() if re.match(r"purchased_xsiam_(?!gb).*$", key)][0]
         licenseTypeString = licenseTypeKey.removeprefix("purchased_")
         licenseType = licenseTypeString.replace("_", " ").title()
         split = licenseType.split(" ")
@@ -46,14 +43,10 @@ def get_xsiam_license_data():
             )
             licenseBreakdown.append(str(licenseBreakdownRaw.get("users")) + " Users")
             licenseBreakdown.append(str(licenseBreakdownRaw.get("gb")) + " GB")
-            licenseDetails.append(
-                {"field": "License Breakdown", "value": ",\n".join(licenseBreakdown)}
-            )
+            licenseDetails.append({"field": "License Breakdown", "value": ",\n".join(licenseBreakdown)})
 
         expirationString = licenseTypeString + "_expiration"
-        licenseDetails.append(
-            {"field": "License Expiration", "value": details.get(expirationString)}
-        )
+        licenseDetails.append({"field": "License Expiration", "value": details.get(expirationString)})
 
         licenseDetails.append(
             {
@@ -74,28 +67,18 @@ def get_xsiam_license_data():
             }
         )
 
-        trialsRaw = [
-            key
-            for key, value in details.items()
-            if re.compile(r"_is_trial").search(key)
-        ]
+        trialsRaw = [key for key, value in details.items() if re.compile(r"_is_trial").search(key)]
         trialNames = []
         for item in trialsRaw:
             item = item.removesuffix("_is_trial").replace("_", " ")
             item = item.upper() if item == "xth" else item.title()
             trialNames.append(item)
-        licenseDetails.append(
-            {"field": "Modules \ Features in Trial", "value": ",\n".join(trialNames)}
-        )
+        licenseDetails.append({"field": "Modules \ Features in Trial", "value": ",\n".join(trialNames)})
 
         expirations = {
             key: value
             for key, value in details.items()
-            if (
-                re.compile(r"_expiration").search(key)
-                and value != details.get(expirationString)
-                and value != 0
-            )
+            if (re.compile(r"_expiration").search(key) and value != details.get(expirationString) and value != 0)
         }
         licenseDetails.append(
             {
@@ -109,10 +92,7 @@ def get_xsiam_license_data():
         cloudPostureBreakdownRaw = details.get("installed_cloud_posture_breakdown", {})
         if cloudPostureBreakdownRaw != {}:
             cloudPostureBreakdown = []
-            cloudPostureBreakdown.append(
-                "Total Workloads: "
-                + str(details.get("purchased_cloud_posture").get("workloads"))
-            )
+            cloudPostureBreakdown.append("Total Workloads: " + str(details.get("purchased_cloud_posture").get("workloads")))
             for item in cloudPostureBreakdownRaw:
                 string = str(item.get("usage")) + " " + item.get("name")
                 cloudPostureBreakdown.append(string)
@@ -126,10 +106,7 @@ def get_xsiam_license_data():
         cloudRuntimeBreakdownRaw = details.get("installed_pro_cloud_breakdown", {})
         if cloudRuntimeBreakdownRaw != {}:
             cloudRuntimeBreakdown = []
-            cloudRuntimeBreakdown.append(
-                "Total Workloads: "
-                + str(details.get("purchased_pro_cloud").get("agents"))
-            )
+            cloudRuntimeBreakdown.append("Total Workloads: " + str(details.get("purchased_pro_cloud").get("agents")))
             for item in cloudRuntimeBreakdownRaw:
                 string = str(item.get("usage")) + " " + item.get("name")
                 cloudRuntimeBreakdown.append(string)
@@ -140,9 +117,7 @@ def get_xsiam_license_data():
                 }
             )
 
-        demisto.executeCommand(
-            "setIncident", {"healthchecklicensedetails": licenseDetails}
-        )
+        demisto.executeCommand("setIncident", {"healthchecklicensedetails": licenseDetails})
 
         return_results(CommandResults(readable_output="HealchCheckInstalledPacks Done"))
 
@@ -168,58 +143,49 @@ def get_xsoar6_license_data():
     try:
         with open(res[0]["Contents"]["path"]) as file:
             python_dict = json.loads(str(file.read()))
-
-            # Parsing logic preserved from original script
-            license_section = python_dict.get("license", {})
-            soar_section = (
-                license_section.get("soar", {})
-                if isinstance(license_section, dict)
-                else {}
-            )
-
             if "validTil" in python_dict:
                 validTil = python_dict["validTil"]
-            elif soar_section:
-                validTil = soar_section.get("validTil")
+            elif "soar" in python_dict["license"]:
+                validTil = python_dict["license"]["soar"]["validTil"]
             else:
-                validTil = license_section.get("validTil")
+                validTil = python_dict["license"]["validTil"]
 
             if "customer" in python_dict:
                 customer = python_dict["customer"]
-            elif soar_section:
-                customer = soar_section.get("customer")
+            elif "soar" in python_dict["license"]:
+                customer = python_dict["license"]["soar"]["customer"]
             else:
-                customer = license_section.get("customer")
+                customer = python_dict["license"]["customer"]
 
             if "permittedUsers" in python_dict:
                 permittedUsers = python_dict["permittedUsers"]
-            elif soar_section:
-                permittedUsers = soar_section.get("permittedUsers")
+            elif "soar" in python_dict["license"]:
+                permittedUsers = python_dict["license"]["soar"]["permittedUsers"]
             else:
-                permittedUsers = license_section.get("permittedUsers")
+                permittedUsers = python_dict["license"]["permittedUsers"]
 
             if "usedUsers" in python_dict:
                 usedUsers = python_dict["usedUsers"]
-            elif soar_section:
-                usedUsers = soar_section.get("usedUsers")
+            elif "soar" in python_dict["license"]:
+                usedUsers = python_dict["license"]["soar"]["usedUsers"]
             else:
-                usedUsers = license_section.get("usedUsers")
+                usedUsers = python_dict["license"]["usedUsers"]
 
             if "type" in python_dict:
                 licenseType = python_dict["type"]
-            elif soar_section:
-                licenseType = soar_section.get("type")
-            elif isinstance(license_section, dict) and "types" in license_section:
-                licenseType = license_section["types"].get("soar")
+            elif "soar" in python_dict["license"]:
+                licenseType = python_dict["license"]["soar"]["type"]
+            elif "types" in python_dict["license"]:
+                licenseType = python_dict["license"]["types"]["soar"]
             else:
-                licenseType = license_section.get("type")
+                licenseType = python_dict["license"]["type"]
 
             if "id" in python_dict:
                 uid = python_dict["id"]
-            elif soar_section:
-                uid = soar_section.get("id")
+            elif "soar" in python_dict["license"]:
+                uid = python_dict["license"]["soar"]["id"]
             else:
-                uid = license_section.get("id")
+                uid = python_dict["license"]["id"]
 
             demisto.executeCommand(
                 "setIncident",

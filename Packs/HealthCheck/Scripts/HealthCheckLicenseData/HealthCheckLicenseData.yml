@@ -16,7 +16,8 @@ runas: DBotWeakRole
 script: ''
 scripttarget: 0
 subtype: python3
-tags: HealthCheck
+tags: 
+- HealthCheck
 type: python
 fromversion: 6.0.0
 tests:
