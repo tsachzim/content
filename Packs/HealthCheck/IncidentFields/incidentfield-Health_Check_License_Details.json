@@ -92,5 +92,6 @@
 	"validatedError": "",
 	"validationRegex": "",
 	"version": -1,
-	"x2_fields": ""
+	"x2_fields": "",
+    "fromVersion": "8.10.0"
 }
