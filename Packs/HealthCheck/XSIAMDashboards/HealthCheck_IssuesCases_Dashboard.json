@@ -1,7 +1,7 @@
 {
     "dashboards_data": [
         {
-            "name": "Health Check - Issues/Cases-HC-test",
+            "name": "Health Check - Issues/Cases",
             "description": null,
             "status": "ENABLED",
             "layout": [

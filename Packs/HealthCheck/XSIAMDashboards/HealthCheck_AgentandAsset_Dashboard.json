@@ -1,7 +1,7 @@
 {
     "dashboards_data": [
         {
-            "name": "Health Check - Agent and Asset-HC-test",
+            "name": "Health Check - Agent and Asset",
             "description": null,
             "status": "ENABLED",
             "layout": [
