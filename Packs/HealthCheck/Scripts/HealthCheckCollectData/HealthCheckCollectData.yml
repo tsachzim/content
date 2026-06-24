@@ -1,0 +1,46 @@
+args:
+- default: false
+  description: >-
+    The data category to collect. Choose 'Agents' to collect agent-related data
+    (Agent Status Breakdown, Agent End-of-Life Versions) via the Cortex XDR API.
+    Choose 'Cases' for cases/alerts data (reserved for future collectors).
+  isArray: false
+  name: data
+  predefined:
+  - Agents
+  - Cases
+  required: true
+  secret: false
+comment: >-
+  Collects health-check data from the Cortex XDR API for a specific category.
+  Pass data=Agents to collect agent status and end-of-life version counts.
+  Results are written to HealthCheck.CollectResults in the incident context,
+  keyed by widget name, for downstream processing by HealthCheckParseResults.
+commonfields:
+  id: HealthCheckCollectData
+  version: -1
+enabled: true
+name: HealthCheckCollectData
+outputs:
+- contextPath: HealthCheck.CollectResults.Agent Status Breakdown
+  description: >-
+    Agent connection status counts. A dict with keys connected, lost, disconnected,
+    uninstalled — each mapped to the total_count returned by the API.
+  type: Unknown
+- contextPath: HealthCheck.CollectResults.Agent End-of-Life Versions
+  description: >-
+    Total number of endpoints running end-of-life agent versions, as reported
+    by the API filter endpoint_version_is_outdated=True.
+  type: Unknown
+script: '-'
+system: false
+tags:
+- HealthCheck
+timeout: '0'
+type: python
+subtype: python3
+dockerimage: demisto/python3:3.12.13.8428455
+fromversion: 8.0.0
+marketplaces:
+- xsoar
+- marketplacev2
