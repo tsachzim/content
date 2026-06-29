@@ -2,11 +2,20 @@ import demistomock as demisto  # noqa: F401
 from CommonServerPython import *  # noqa: F401
 
 import json
+from datetime import UTC, datetime
 from typing import Any
 
-# ---------------------------------------------------------------------------
-# API helpers
-# ---------------------------------------------------------------------------
+import pandas as pd
+
+PAGE_SIZE = 100
+DISCONNECTED_DAYS_THRESHOLD = 20
+
+# os_type field → get_versions OS family key
+_OS_TYPE_TO_FAMILY: dict[str, str] = {
+    "AGENT_OS_WINDOWS": "windows",
+    "AGENT_OS_LINUX": "linux",
+    "AGENT_OS_MAC": "macos",
+}
 
 
 def api_post(uri: str, body: dict) -> Any:
@@ -20,124 +29,226 @@ def api_post(uri: str, body: dict) -> Any:
     return result[0]["Contents"]["response"]["reply"]
 
 
-# ---------------------------------------------------------------------------
-# Agents collectors
-# ---------------------------------------------------------------------------
+def fetch_supported_versions() -> dict[str, set[str]]:
+    """Fetch supported agent versions per OS family from /public_api/v1/distributions/get_versions."""
+    reply = api_post("/public_api/v1/distributions/get_versions", {})
+    return {family: set(versions) for family, versions in reply.items() if isinstance(versions, list)}
 
 
-def get_endpoint_total_count(filters: list) -> int:
+def fetch_all_endpoints() -> list[dict]:
     """
-    Shared helper: call /public_api/v1/endpoints/get_endpoints with the given
-    filters list and return total_count from the reply.
-
-    Args:
-        filters: list of filter dicts, e.g.
-            [{"field": "endpoint_status", "operator": "in", "value": ["connected"]}]
+    Fetch all endpoints via paginated POST /public_api/v1/endpoints/get_endpoint.
+    Uses total_count from the first response to stop pagination precisely.
     """
-    body = {
-        "request_data": {
-            "search_from": 0,
-            "search_to": 1,
-            "filters": filters,
+    all_records: list[dict] = []
+    search_from = 0
+    total_count: int | None = None
+
+    while True:
+        body = {
+            "request_data": {
+                "search_from": search_from,
+                "search_to": search_from + PAGE_SIZE,
+                "filters": [],
+            }
         }
-    }
-    reply = api_post("/public_api/v1/endpoints/get_endpoint", body)
-    return reply.get("total_count", 0)
+        reply = api_post("/public_api/v1/endpoints/get_endpoint", body)
+        page: list[dict] = reply.get("endpoints", [])
+
+        if total_count is None:
+            total_count = int(reply.get("total_count", 0))
+
+        all_records.extend(page)
+
+        if len(all_records) >= total_count:
+            break
+
+        search_from += PAGE_SIZE
+
+    return all_records
 
 
-# All valid endpoint status values
-ENDPOINT_STATUSES = ["connected", "lost", "disconnected", "uninstalled"]
+def build_endpoints_dataframe(records: list[dict]) -> pd.DataFrame:
+    """Convert endpoint records list into a pandas DataFrame."""
+    return pd.DataFrame(records)
 
 
-def collect_agent_status_breakdown(_unused: Any) -> dict:
+def print_df_to_markdown(df: pd.DataFrame, title: str) -> None:
+    """Render a DataFrame as a markdown table in the war room."""
+    return_results(CommandResults(readable_output=tableToMarkdown(title, df.to_dict(orient="records"))))
+
+
+def query_agent_status_breakdown(df: pd.DataFrame) -> pd.DataFrame:
+    """Count endpoints grouped by endpoint_status, sorted descending."""
+    result = df.groupby("endpoint_status").size().reset_index(name="total")
+    return result.sort_values("total", ascending=False).reset_index(drop=True)
+
+
+def query_agent_eol_versions(
+    df: pd.DataFrame,
+    supported_versions: dict[str, set[str]],
+) -> pd.DataFrame:
     """
-    Widget: Agent Status Breakdown
-    Calls get_endpoint_total_count once per status value.
-    Returns: {"connected": N, "lost": N, "disconnected": N, "uninstalled": N}
+    List endpoints whose agent version is not in the supported versions list for their OS family.
+    Uses os_type field to determine OS family. Unknown OS types are treated as supported.
+    Returns columns: [endpoint_name, endpoint_version, operating_system, os_family].
     """
-    result: dict = {}
-    for status in ENDPOINT_STATUSES:
-        total = get_endpoint_total_count([{"field": "endpoint_status", "operator": "in", "value": [status]}])
-        demisto.debug(f"[HealthCheckCollectData] status={status} total_count={total}")
-        result[status] = total
-    return result
+    _EMPTY = pd.DataFrame(columns=["endpoint_name", "endpoint_version", "operating_system", "os_family"])
+
+    if not supported_versions:
+        return _EMPTY
+
+    os_families = df["os_type"].apply(lambda t: _OS_TYPE_TO_FAMILY.get(t or "", "unknown"))
+
+    def _is_eol(idx: int) -> bool:
+        family = os_families.iloc[idx]
+        supported = supported_versions.get(family)
+        return supported is not None and str(df["endpoint_version"].iloc[idx]) not in supported
+
+    df_eol = df[[_is_eol(i) for i in range(len(df))]].copy()
+
+    if df_eol.empty:
+        return _EMPTY
+
+    df_eol["os_family"] = os_families[df_eol.index].values
+    cols = [c for c in ["endpoint_name", "endpoint_version", "operating_system", "os_family"] if c in df_eol.columns]
+    return df_eol[cols].sort_values(["os_family", "endpoint_version"]).reset_index(drop=True)
 
 
-def collect_agent_eol_versions(_unused: Any) -> dict:
+def query_inventory_by_os(df: pd.DataFrame) -> pd.DataFrame:
+    """Count endpoints grouped by platform, operating_system, os_version, sorted descending."""
+    result = df.groupby(["platform", "operating_system", "os_version"]).size().reset_index(name="total")
+    return result.sort_values("total", ascending=False).reset_index(drop=True)
+
+
+def query_content_autoupdate_disabled(df: pd.DataFrame) -> pd.DataFrame | None:
+    """Count endpoints with content auto-update disabled, grouped by prevention policy. Returns None if none found."""
+    df_filtered = df[df["content_auto_update"].isin(["DISABLED", "content_auto_update_0", 0])]
+    if df_filtered.empty:
+        return None
+    result = df_filtered.groupby("assigned_prevention_policy").size().reset_index(name="total")
+    return result.sort_values("total", ascending=False).reset_index(drop=True)
+
+
+def query_connection_lost_endpoints(df: pd.DataFrame) -> pd.DataFrame:
+    """List CONNECTION_LOST endpoints with days since last seen."""
+    df_filtered = df[df["endpoint_status"] == "CONNECTION_LOST"]
+    if df_filtered.empty:
+        return pd.DataFrame(columns=["name", "type", "daysNotSeen", "last_seen"])
+
+    current_time_utc = pd.to_datetime(datetime.now(UTC))
+    last_seen_dt = pd.to_datetime(df_filtered["last_seen"], unit="ms", utc=True)
+    result = pd.DataFrame(
+        {
+            "name": df_filtered["endpoint_name"].values,
+            "type": df_filtered["endpoint_type"].values,
+            "daysNotSeen": (current_time_utc - last_seen_dt).dt.days.values,
+            "last_seen": last_seen_dt.dt.strftime("%Y-%m-%d %H:%M:%S").values,
+        }
+    )
+    return result.sort_values("daysNotSeen", ascending=False, ignore_index=True)
+
+
+def query_disconnected_endpoints_by_type(
+    df: pd.DataFrame,
+    days_threshold: int = DISCONNECTED_DAYS_THRESHOLD,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
-    Widget: Agent End-of-Life Versions
-    Calls get_endpoint_total_count filtered by endpoint_version_is_outdated=True.
-    Returns: {"total_eol_endpoints": N}
+    List DISCONNECTED workstations and servers not seen for >= days_threshold days.
+    Returns (workstations_df, servers_df), each with columns [name, type, daysNotSeen, last_seen].
     """
-    total = get_endpoint_total_count([{"field": "endpoint_version_is_outdated", "operator": "in", "value": [True]}])
-    demisto.debug(f"[HealthCheckCollectData] EOL endpoints total_count={total}")
-    return {"total_eol_endpoints": total}
+    empty = pd.DataFrame(columns=["name", "type", "daysNotSeen", "last_seen"])
+    df_filtered = df[(df["endpoint_status"] == "DISCONNECTED") & (df["endpoint_type"].isin(["TYPE_WORKSTATION", "TYPE_SERVER"]))]
 
+    if df_filtered.empty:
+        return empty, empty.copy()
 
-# ---------------------------------------------------------------------------
-# Collector registry
-# ---------------------------------------------------------------------------
-# Maps argument name → list of (widget_name, collector_function) tuples.
-# Each collector is self-contained and fetches its own data.
-# ---------------------------------------------------------------------------
+    current_time_utc = pd.to_datetime(datetime.now(UTC))
+    last_seen_dt = pd.to_datetime(df_filtered["last_seen"], unit="ms", utc=True)
+    result_df = pd.DataFrame(
+        {
+            "name": df_filtered["endpoint_name"].values,
+            "type": df_filtered["endpoint_type"].values,
+            "daysNotSeen": (current_time_utc - last_seen_dt).dt.days.values,
+            "last_seen": last_seen_dt.dt.strftime("%Y-%m-%d %H:%M:%S").values,
+        }
+    )
 
-COLLECTORS: dict[str, list[tuple[str, Any]]] = {
-    "Agents": [
-        ("Agent Status Breakdown", collect_agent_status_breakdown),
-        ("Agent End-of-Life Versions", collect_agent_eol_versions),
-    ],
-    # "Cases": [
-    #     ("My Cases Widget", collect_my_cases_widget),
-    # ],
-}
-
-
-# ---------------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------------
+    final_df = result_df[result_df["daysNotSeen"] >= days_threshold].copy()
+    workstations = final_df[final_df["type"] == "TYPE_WORKSTATION"].sort_values("daysNotSeen", ascending=False, ignore_index=True)
+    servers = final_df[final_df["type"] == "TYPE_SERVER"].sort_values("daysNotSeen", ascending=False, ignore_index=True)
+    return workstations, servers
 
 
 def main() -> None:
-    args = demisto.args()
-    data = args.get("data", "")
+    records = fetch_all_endpoints()
 
-    if not data:
-        return_error("Missing required argument: data. Valid options: Agents, Cases")
+    if not records:
+        return_warning("No endpoint records returned by the API.")
         return
 
-    collectors = COLLECTORS.get(data)
-    if collectors is None:
-        return_error(f"Unknown data value '{data}'. Valid options: {', '.join(COLLECTORS.keys())}")
-        return
+    df = build_endpoints_dataframe(records)
+    return_results(CommandResults(readable_output=f"**Endpoints loaded:** {len(df)}"))
 
-    demisto.debug(f"[HealthCheckCollectData] collecting data for: {data}")
-    outputs: list[CommandResults] = []
+    try:
+        print_df_to_markdown(query_agent_status_breakdown(df), "Agent Status Breakdown")
+    except Exception as exc:
+        demisto.error(f"query_agent_status_breakdown failed: {exc}")
 
-    for widget_name, collector_fn in collectors:
-        try:
-            result = collector_fn(None)
-            demisto.debug(f"[HealthCheckCollectData] {widget_name}: collected")
-            outputs.append(
-                CommandResults(
-                    outputs_prefix="HealthCheck.CollectResults",
-                    outputs={widget_name: result},
-                    readable_output=tableToMarkdown(
-                        widget_name,
-                        [result] if isinstance(result, dict) else result,
-                        headers=list(result.keys()) if isinstance(result, dict) else (list(result[0].keys()) if result else []),
-                    )
-                    if result
-                    else f"**{widget_name}**: no data",
-                )
+    try:
+        supported_versions = fetch_supported_versions()
+        eol_df = query_agent_eol_versions(df, supported_versions)
+        if eol_df.empty:
+            return_results(CommandResults(readable_output="**Agent EOL Versions:** All agents are on supported versions."))
+        else:
+            print_df_to_markdown(eol_df, f"Agent EOL Versions ({len(eol_df)} endpoints)")
+    except Exception as exc:
+        demisto.error(f"query_agent_eol_versions failed: {exc}")
+
+    try:
+        print_df_to_markdown(query_inventory_by_os(df), "Endpoint Inventory by OS")
+    except Exception as exc:
+        demisto.error(f"query_inventory_by_os failed: {exc}")
+
+    try:
+        autoupdate_df = query_content_autoupdate_disabled(df)
+        if autoupdate_df is not None:
+            print_df_to_markdown(autoupdate_df, "Content Auto-Update Disabled (by Prevention Policy)")
+        else:
+            return_results(CommandResults(readable_output="**Content Auto-Update Disabled:** None found."))
+    except Exception as exc:
+        demisto.error(f"query_content_autoupdate_disabled failed: {exc}")
+
+    try:
+        lost_df = query_connection_lost_endpoints(df)
+        if lost_df.empty:
+            return_results(CommandResults(readable_output="**Connection Lost Endpoints:** None found."))
+        else:
+            print_df_to_markdown(lost_df, f"Connection Lost Endpoints ({len(lost_df)})")
+    except Exception as exc:
+        demisto.error(f"query_connection_lost_endpoints failed: {exc}")
+
+    try:
+        workstations, servers = query_disconnected_endpoints_by_type(df, DISCONNECTED_DAYS_THRESHOLD)
+        if workstations.empty:
+            return_results(
+                CommandResults(readable_output=f"**Disconnected Workstations:** None >{DISCONNECTED_DAYS_THRESHOLD} days.")
             )
-        except Exception as exc:
-            demisto.error(f"[HealthCheckCollectData] collector '{widget_name}' failed: {exc}")
+        else:
+            print_df_to_markdown(
+                workstations,
+                f"Disconnected Workstations >{DISCONNECTED_DAYS_THRESHOLD} days ({len(workstations)})",
+            )
 
-    if not outputs:
-        return_warning("HealthCheckCollectData: no data collected.")
-        return
-
-    return_results(outputs)
+        if servers.empty:
+            return_results(CommandResults(readable_output=f"**Disconnected Servers:** None >{DISCONNECTED_DAYS_THRESHOLD} days."))
+        else:
+            print_df_to_markdown(
+                servers,
+                f"Disconnected Servers >{DISCONNECTED_DAYS_THRESHOLD} days ({len(servers)})",
+            )
+    except Exception as exc:
+        demisto.error(f"query_disconnected_endpoints_by_type failed: {exc}")
 
 
 if __name__ in ("__main__", "__builtin__", "builtins"):
