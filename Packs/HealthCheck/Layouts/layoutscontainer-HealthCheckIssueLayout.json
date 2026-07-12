@@ -2,7 +2,7 @@
     "id": "HealthCheck issue Layout",
     "version": 2,
     "cacheVersn": 0,
-    "modified": "2026-06-29T10:20:33.422768134Z",
+    "modified": "2026-07-08T10:44:40.117704562Z",
     "sizeInBytes": 0,
     "packID": "HealthCheck",
     "packName": "System Diagnostics and Health Check",
@@ -27,7 +27,7 @@
     "system": true,
     "locked": false,
     "group": "incident",
-    "detached": true,
+    "detached": false,
     "detailsV2": {
         "TypeName": "",
         "tabs": [
@@ -99,7 +99,7 @@
                         "static": false,
                         "type": "dynamic",
                         "w": 1,
-                        "x": 2,
+                        "x": 0,
                         "y": 3
                     },
                     {
@@ -116,7 +116,7 @@
                         "type": "dynamic",
                         "w": 1,
                         "x": 0,
-                        "y": 3
+                        "y": 5
                     },
                     {
                         "h": 2,
@@ -132,7 +132,7 @@
                         "type": "dynamic",
                         "w": 1,
                         "x": 1,
-                        "y": 3
+                        "y": 5
                     },
                     {
                         "displayType": "ROW",
@@ -160,7 +160,7 @@
                         "static": false,
                         "w": 2,
                         "x": 0,
-                        "y": 5
+                        "y": 7
                     },
                     {
                         "displayType": "ROW",
@@ -240,7 +240,7 @@
                         "static": false,
                         "w": 1,
                         "x": 0,
-                        "y": 8
+                        "y": 10
                     },
                     {
                         "displayType": "ROW",
@@ -266,7 +266,7 @@
                         "static": false,
                         "w": 1,
                         "x": 1,
-                        "y": 8
+                        "y": 10
                     },
                     {
                         "displayType": "ROW",
@@ -324,10 +324,62 @@
                         "moved": false,
                         "name": "Custom Content",
                         "static": false,
-                        "w": 2,
+                        "w": 1,
                         "wrapLabels": true,
-                        "x": 0,
+                        "x": 2,
                         "y": 11
+                    },
+                    {
+                        "displayType": "ROW",
+                        "h": 2,
+                        "hideItemTitleOnlyOne": true,
+                        "hideName": false,
+                        "i": "1ketdonhjm-field-changed-1ketdonhjm-bec3c347-de19-4042-859f-7cb9fbf606b4",
+                        "items": [
+                            {
+                                "endCol": 2,
+                                "fieldId": "healthcheckdisconnectedenginescount",
+                                "height": 26,
+                                "id": "9a6494ad-aa04-4ddf-8768-9e6e5d228f5e",
+                                "index": 0,
+                                "sectionItemType": "field",
+                                "startCol": 0
+                            }
+                        ],
+                        "maxW": 3,
+                        "minH": 1,
+                        "moved": false,
+                        "name": "Number of Disconnected Engines",
+                        "static": false,
+                        "w": 1,
+                        "x": 2,
+                        "y": 3
+                    },
+                    {
+                        "displayType": "ROW",
+                        "h": 2,
+                        "hideItemTitleOnlyOne": true,
+                        "hideName": false,
+                        "i": "1ketdonhjm-field-changed-1ketdonhjm-b38952c4-789a-4c47-9f3c-9298a4744617",
+                        "items": [
+                            {
+                                "endCol": 2,
+                                "fieldId": "healthcheckoutdatedenginescount",
+                                "height": 53,
+                                "id": "ae1dac8a-5a8a-4934-9812-fe2d2bc12b7c",
+                                "index": 0,
+                                "sectionItemType": "field",
+                                "startCol": 0
+                            }
+                        ],
+                        "maxW": 3,
+                        "minH": 1,
+                        "moved": false,
+                        "name": "Number of Outdated Engines",
+                        "static": false,
+                        "w": 1,
+                        "x": 1,
+                        "y": 3
                     }
                 ],
                 "type": "custom"
