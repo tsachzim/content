@@ -266,7 +266,7 @@ tasks:
       - '24'
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 2380\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 2920\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -307,7 +307,7 @@ tasks:
         simple: severity
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 2550\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 3090\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -331,7 +331,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 2735\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 3275\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -720,7 +720,7 @@ tasks:
       id: dbd445ff-7a06-43ae-a446-c35a581fa3db
       version: -1
       name: Collect agents data
-      description: Collects health-check data from the Cortex XDR API for a specific category. Pass data=Agents to collect agent status and end-of-life version counts. Results are written to HealthCheck.CollectResults in the incident context, keyed by widget name, for downstream processing by HealthCheckParseResults.
+      description: Collects health-check data from the Cortex XDR API for a specific category. Pass data=Agents to collect agent status and end-of-life version counts. Results are written to HealthCheck.CollectResults in the alert context, keyed by widget name, for downstream processing by HealthCheckParseResults.
       scriptName: HealthCheckCollectData
       type: regular
       iscommand: false
@@ -729,7 +729,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - '23'
+      - '60'
     scriptarguments:
       data:
         simple: Agents
@@ -802,7 +802,7 @@ tasks:
       id: 0434cd21-c3f9-4a9c-86a2-2caed8862d90
       version: -1
       name: Collect cases data
-      description: Collects health-check data from the Cortex XDR API for a specific category. Pass data=Agents to collect agent status and end-of-life version counts. Results are written to HealthCheck.CollectResults in the incident context, keyed by widget name, for downstream processing by HealthCheckParseResults.
+      description: Collects health-check data from the Cortex XDR API for a specific category. Pass data=Agents to collect agent status and end-of-life version counts. Results are written to HealthCheck.CollectResults in the alert context, keyed by widget name, for downstream processing by HealthCheckParseResults.
       scriptName: HealthCheckCollectData
       type: regular
       iscommand: false
@@ -811,7 +811,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - '23'
+      - '60'
     scriptarguments:
       data:
         simple: Cases
@@ -825,9 +825,95 @@ tasks:
     quietmode: 0
     isoversize: false
     isautoswitchedtoquietmode: false
+  '60':
+    id: '60'
+    taskid: 2fffb498-f811-42d2-8b23-4620931c353f
+    type: title
+    task:
+      id: 2fffb498-f811-42d2-8b23-4620931c353f
+      version: -1
+      name: Engines
+      type: title
+      iscommand: false
+      brand: ''
+      playbooktaskmissingcomponent:
+      istaskmissingcomponenterrordismissed: false
+    nexttasks:
+      '#none#':
+      - '61'
+    separatecontext: false
+    continueonerrortype: ''
+    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 2380\n  }\n}"
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  '61':
+    id: '61'
+    taskid: 8c89e5c5-8c8b-43fe-a1f1-18a63e069977
+    type: regular
+    task:
+      id: 8c89e5c5-8c8b-43fe-a1f1-18a63e069977
+      version: -1
+      name: Check for outdated engines
+      scriptName: HealthCheckOutdatedEngines
+      type: regular
+      iscommand: false
+      brand: ''
+      playbooktaskmissingcomponent:
+      istaskmissingcomponenterrordismissed: false
+    nexttasks:
+      '#none#':
+      - '62'
+    scriptarguments:
+      RunInPlaybook:
+        simple: 'True'
+    separatecontext: false
+    continueonerrortype: ''
+    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 2550\n  }\n}"
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  '62':
+    id: '62'
+    taskid: 10bcbd57-e16f-4341-915b-95b9b2381e67
+    type: regular
+    task:
+      id: 10bcbd57-e16f-4341-915b-95b9b2381e67
+      version: -1
+      name: Check for disconnected engines
+      scriptName: HealthCheckDisconnectedEngines
+      type: regular
+      iscommand: false
+      brand: ''
+      playbooktaskmissingcomponent:
+      istaskmissingcomponenterrordismissed: false
+    nexttasks:
+      '#none#':
+      - '23'
+    scriptarguments:
+      RunInPlaybook:
+        simple: 'True'
+    separatecontext: false
+    continueonerrortype: ''
+    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 2735\n  }\n}"
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
 outlinetasks: {}
 system: true
-view: "{\n  \"linkLabelsPosition\": {},\n  \"paper\": {\n    \"dimensions\": {\n      \"height\": 2745,\n      \"width\": 2530,\n      \"x\": 50,\n      \"y\": 50\n    }\n  }\n}"
+view: "{\n  \"linkLabelsPosition\": {},\n  \"paper\": {\n    \"dimensions\": {\n      \"height\": 3285,\n      \"width\": 2530,\n      \"x\": 50,\n      \"y\": 50\n    }\n  }\n}"
 inputs: []
 inputSections:
 - inputs: []
