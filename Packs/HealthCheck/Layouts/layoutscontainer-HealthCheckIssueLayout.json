@@ -2,7 +2,7 @@
     "id": "HealthCheck issue Layout",
     "version": 2,
     "cacheVersn": 0,
-    "modified": "2026-07-08T10:44:40.117704562Z",
+    "modified": "2026-07-13T07:06:58.636947864Z",
     "sizeInBytes": 0,
     "packID": "HealthCheck",
     "packName": "System Diagnostics and Health Check",
@@ -27,7 +27,7 @@
     "system": true,
     "locked": false,
     "group": "incident",
-    "detached": false,
+    "detached": true,
     "detailsV2": {
         "TypeName": "",
         "tabs": [
@@ -63,7 +63,7 @@
                                 "id": "8ec20e29-4012-4b40-aacc-df089ecb105b",
                                 "index": 0,
                                 "name": "Export Summary Data",
-                                "scriptId": "HealthCheckExportSummaryData",
+                                "scriptId": "ba04336a-cfd0-4412-82c3-464e97b09db6",
                                 "sectionItemType": "button",
                                 "startCol": 0
                             }
