@@ -1,5 +1,5 @@
 id: HealthCheck
-version: 4
+version: 7
 contentitemexportablefields:
   contentitemfields:
     packID: HealthCheck
@@ -70,7 +70,7 @@ tasks:
         simple: '0'
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 960\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 1130\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -98,7 +98,7 @@ tasks:
       - '48'
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 1340,\n    \"y\": 960\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 1340,\n    \"y\": 1130\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -108,12 +108,12 @@ tasks:
     isautoswitchedtoquietmode: false
   '8':
     id: '8'
-    taskid: 6914845e-ae88-4900-8148-fd51cb69b8a9
+    taskid: b74bf8f1-571e-4357-87fc-ad2cb139603f
     type: title
     task:
-      id: 6914845e-ae88-4900-8148-fd51cb69b8a9
+      id: b74bf8f1-571e-4357-87fc-ad2cb139603f
       version: -1
-      name: System Details - N/A
+      name: System Details
       description: In this section, collect information about the system
       type: title
       iscommand: false
@@ -153,7 +153,7 @@ tasks:
       - '6'
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 1125,\n    \"y\": 782.5\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 1125,\n    \"y\": 960\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -180,7 +180,7 @@ tasks:
       - '18'
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 1500\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 1670\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -211,7 +211,7 @@ tasks:
         simple: ${Health Check Thresholds.Playbooks}
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 1670\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 1840\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -221,12 +221,12 @@ tasks:
     isautoswitchedtoquietmode: false
   '22':
     id: '22'
-    taskid: c21647b4-1f34-4916-8c30-8eb9d2cc52e1
+    taskid: e5272464-94ae-4583-a0fc-74e05a38c1e0
     type: title
     task:
-      id: c21647b4-1f34-4916-8c30-8eb9d2cc52e1
+      id: e5272464-94ae-4583-a0fc-74e05a38c1e0
       version: -1
-      name: Analyze Indicators - N/A
+      name: Analyze Indicators -TBD
       description: Reports on common indicators
       type: title
       iscommand: false
@@ -239,7 +239,7 @@ tasks:
       - '58'
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 1855\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 2025\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -266,7 +266,7 @@ tasks:
       - '24'
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 2920\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 3090\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -307,7 +307,7 @@ tasks:
         simple: severity
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 3090\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 3260\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -331,7 +331,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 3275\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 3445\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -341,12 +341,12 @@ tasks:
     isautoswitchedtoquietmode: false
   '43':
     id: '43'
-    taskid: f42f5b67-9442-4ddd-ab5e-d9b1ef4724c3
+    taskid: f2683791-1ad3-427a-8178-9eeed41a5e3c
     type: title
     task:
-      id: f42f5b67-9442-4ddd-ab5e-d9b1ef4724c3
+      id: f2683791-1ad3-427a-8178-9eeed41a5e3c
       version: -1
-      name: Server Settings
+      name: Server Settings - TBD
       description: In this section, collect information about the Server Configuration
       type: title
       iscommand: false
@@ -358,7 +358,7 @@ tasks:
       - '12'
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 1125,\n    \"y\": 597.5\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 1125,\n    \"y\": 782.5\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -383,7 +383,7 @@ tasks:
       istaskmissingcomponenterrordismissed: false
     nexttasks:
       '#none#':
-      - '43'
+      - '63'
     separatecontext: false
     continueonerrortype: ''
     view: "{\n  \"position\": {\n    \"x\": 1125,\n    \"y\": 405\n  }\n}"
@@ -510,7 +510,7 @@ tasks:
       - '54'
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 1125,\n    \"y\": 1145\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 1125,\n    \"y\": 1315\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -538,7 +538,7 @@ tasks:
       - '17'
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 50,\n    \"y\": 1315\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 50,\n    \"y\": 1485\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -566,7 +566,7 @@ tasks:
       - '17'
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 480,\n    \"y\": 1315\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 480,\n    \"y\": 1485\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -594,7 +594,7 @@ tasks:
       - '17'
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 1315\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 1485\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -622,7 +622,7 @@ tasks:
       - '17'
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 1340,\n    \"y\": 1315\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 1340,\n    \"y\": 1485\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -650,7 +650,7 @@ tasks:
       - '17'
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 1770,\n    \"y\": 1315\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 1770,\n    \"y\": 1485\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -678,7 +678,7 @@ tasks:
       - '17'
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 2200,\n    \"y\": 1315\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 2200,\n    \"y\": 1485\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -704,7 +704,7 @@ tasks:
       - '56'
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 695,\n    \"y\": 2025\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 695,\n    \"y\": 2195\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -735,7 +735,7 @@ tasks:
         simple: Agents
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 695,\n    \"y\": 2195\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 695,\n    \"y\": 2365\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -786,7 +786,7 @@ tasks:
       - '59'
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 1125,\n    \"y\": 2025\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 1125,\n    \"y\": 2195\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -817,7 +817,7 @@ tasks:
         simple: Cases
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 1125,\n    \"y\": 2195\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 1125,\n    \"y\": 2365\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -843,7 +843,7 @@ tasks:
       - '61'
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 2380\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 2550\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -873,7 +873,7 @@ tasks:
         simple: 'True'
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 2550\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 2720\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -903,7 +903,38 @@ tasks:
         simple: 'True'
     separatecontext: false
     continueonerrortype: ''
-    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 2735\n  }\n}"
+    view: "{\n  \"position\": {\n    \"x\": 910,\n    \"y\": 2905\n  }\n}"
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  '63':
+    id: '63'
+    taskid: 4a47d499-48e4-4cb7-99e8-7c65ebb47e67
+    type: regular
+    task:
+      id: 4a47d499-48e4-4cb7-99e8-7c65ebb47e67
+      version: -1
+      name: Admin users
+      description: Fetches Account Admin and Instance Administrator users via core-api-post and displays them in a markdown table.
+      scriptName: HealthCheckGetAdminUsers
+      type: regular
+      iscommand: false
+      brand: ''
+      playbooktaskmissingcomponent:
+      istaskmissingcomponenterrordismissed: false
+    nexttasks:
+      '#none#':
+      - '43'
+    scriptarguments:
+      RunInPlaybook:
+        simple: 'True'
+    separatecontext: false
+    continueonerrortype: ''
+    view: "{\n  \"position\": {\n    \"x\": 1125,\n    \"y\": 590\n  }\n}"
     note: false
     timertriggers: []
     ignoreworker: false
@@ -913,7 +944,7 @@ tasks:
     isautoswitchedtoquietmode: false
 outlinetasks: {}
 system: true
-view: "{\n  \"linkLabelsPosition\": {},\n  \"paper\": {\n    \"dimensions\": {\n      \"height\": 3285,\n      \"width\": 2530,\n      \"x\": 50,\n      \"y\": 50\n    }\n  }\n}"
+view: "{\n  \"linkLabelsPosition\": {},\n  \"paper\": {\n    \"dimensions\": {\n      \"height\": 3455,\n      \"width\": 2530,\n      \"x\": 50,\n      \"y\": 50\n    }\n  }\n}"
 inputs: []
 inputSections:
 - inputs: []

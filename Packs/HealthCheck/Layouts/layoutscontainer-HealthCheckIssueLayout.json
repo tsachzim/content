@@ -1,8 +1,8 @@
 {
     "id": "HealthCheck issue Layout",
-    "version": 2,
+    "version": 3,
     "cacheVersn": 0,
-    "modified": "2026-07-13T07:06:58.636947864Z",
+    "modified": "2026-07-13T08:28:21.462636193Z",
     "sizeInBytes": 0,
     "packID": "HealthCheck",
     "packName": "System Diagnostics and Health Check",
@@ -53,7 +53,7 @@
                         "h": 3,
                         "hideItemTitleOnlyOne": true,
                         "hideName": false,
-                        "i": "kyjcqpltmo-12fe8070-da89-4bb0-9516-ac8eed6b7a57",
+                        "i": "kyjcqpltmo-field-changed-kyjcqpltmo-12fe8070-da89-4bb0-9516-ac8eed6b7a57",
                         "items": [
                             {
                                 "args": {},
@@ -186,7 +186,7 @@
                         "static": false,
                         "w": 1,
                         "x": 2,
-                        "y": 5
+                        "y": 7
                     },
                     {
                         "displayType": "ROW",
@@ -292,7 +292,7 @@
                         "static": false,
                         "w": 1,
                         "x": 2,
-                        "y": 8
+                        "y": 10
                     },
                     {
                         "displayType": "ROW",
@@ -324,10 +324,10 @@
                         "moved": false,
                         "name": "Custom Content",
                         "static": false,
-                        "w": 1,
+                        "w": 3,
                         "wrapLabels": true,
-                        "x": 2,
-                        "y": 11
+                        "x": 0,
+                        "y": 13
                     },
                     {
                         "displayType": "ROW",
@@ -380,6 +380,41 @@
                         "w": 1,
                         "x": 1,
                         "y": 3
+                    },
+                    {
+                        "displayType": "ROW",
+                        "h": 2,
+                        "hideName": false,
+                        "i": "1ketdonhjm-field-changed-d0d56396-ba0d-4d54-8f62-d66bbb06a9b4",
+                        "items": [
+                            {
+                                "endCol": 2,
+                                "fieldId": "healthchecktotaladminscount",
+                                "height": 26,
+                                "id": "7a35a13c-08b0-40ea-bbb2-e75b6779596a",
+                                "index": 0,
+                                "sectionItemType": "field",
+                                "startCol": 0
+                            },
+                            {
+                                "endCol": 2,
+                                "fieldId": "healthcheckinactiveadminscount",
+                                "height": 26,
+                                "id": "8e50f409-60bb-4052-9854-8f806c59a5be",
+                                "index": 1,
+                                "sectionItemType": "field",
+                                "startCol": 0
+                            }
+                        ],
+                        "maxW": 3,
+                        "minH": 1,
+                        "moved": false,
+                        "name": "Admin users",
+                        "static": false,
+                        "w": 1,
+                        "wrapLabels": true,
+                        "x": 2,
+                        "y": 5
                     }
                 ],
                 "type": "custom"
