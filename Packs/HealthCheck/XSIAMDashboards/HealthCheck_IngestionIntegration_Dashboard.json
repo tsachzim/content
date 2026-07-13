@@ -68,65 +68,6 @@
                     ]
                 },
                 {
-                    "id": "row-4814",
-                    "data": [
-                        {
-                            "key": "scr_1774003900767",
-                            "data": {
-                                "type": "Custom Script",
-                                "width": 33.333333333333336,
-                                "height": 250,
-                                "params": {},
-                                "scriptId": "6170c50c-ab4e-4052-8981-cbdaf6fc9d98",
-                                "viewOptions": {
-                                    "type": "pie",
-                                    "commands": [
-                                        {
-                                            "command": {
-                                                "op": "=",
-                                                "name": "show_percentage",
-                                                "value": "false"
-                                            }
-                                        }
-                                    ]
-                                }
-                            }
-                        },
-                        {
-                            "key": "scr_1774003680143",
-                            "data": {
-                                "type": "Custom Script",
-                                "width": 33.333333333333336,
-                                "height": 250,
-                                "params": {},
-                                "scriptId": "8cda6c08-1830-4d96-8eed-f2084be2e967",
-                                "viewOptions": {
-                                    "type": "pie",
-                                    "commands": [
-                                        {
-                                            "command": {
-                                                "op": "=",
-                                                "name": "show_percentage",
-                                                "value": "false"
-                                            }
-                                        }
-                                    ]
-                                }
-                            }
-                        },
-                        {
-                            "key": "text",
-                            "data": {
-                                "text": "[Engines Page](https://xsiam-csemea-10.xdr.eu.paloaltonetworks.com/configuration/engines)",
-                                "type": "Text",
-                                "width": 33.333333333333336,
-                                "height": 250,
-                                "markdownEnabled": true
-                            }
-                        }
-                    ]
-                },
-                {
                     "id": "row-7218",
                     "data": [
                         {
@@ -150,7 +91,7 @@
                             "key": "xql_1773145219483",
                             "data": {
                                 "type": "Custom XQL",
-                                "width": 33.333333333333336,
+                                "width": 50,
                                 "height": 400,
                                 "phrase": "config timeframe = 7d | dataset = metrics_source | filter _PRODUCT = \"NGFW\" | alter ngfw_serial =_device_id | comp values (_log_type) as log_types by ngfw_serial | alter sending_eal_logs = if(log_types = \"eal\", \"yes\", \"no\") | alter sending_traffic_logs = if(log_types = \"traffic\", \"yes\", \"no\") | alter sending_file_data = if(log_types = \"file_data\", \"yes\", \"no\") | alter sending_system_logs = if(log_types = \"system\", \"yes\", \"no\") | alter sending_threat_logs = if(log_types = \"threat\", \"yes\", \"no\") | alter sending_url_logs = if(log_types = \"url\", \"yes\", \"no\") | alter sending_gp_logs = if(log_types = \"globalprotect\", \"yes\", \"no\") | alter sending_config_logs = if(log_types = \"config\", \"yes\", \"no\") | alter sending_auth_logs = if(log_types = \"auth\", \"yes\", \"no\") | fields ngfw_serial , sending*",
                                 "timeSpan": {
@@ -181,7 +122,7 @@
                             "key": "xql_1773147166230",
                             "data": {
                                 "type": "Custom XQL",
-                                "width": 33.333333333333336,
+                                "width": 50,
                                 "height": 400,
                                 "phrase": "config timeframe = 30d |dataset = playbook_tasks | comp values(entity_id ) as tasks by task_name   ",
                                 "timeSpan": {
@@ -206,16 +147,6 @@
                                     },
                                     "columnWidth": null
                                 }
-                            }
-                        },
-                        {
-                            "key": "text",
-                            "data": {
-                                "text": "[Issues Page](https://xsiam-csemea-10.xdr.eu.paloaltonetworks.com/issues)",
-                                "type": "Text",
-                                "width": 33.333333333333336,
-                                "height": 400,
-                                "markdownEnabled": true
                             }
                         }
                     ]
@@ -336,64 +267,6 @@
                                     },
                                     "actionType": "open_xql_search"
                                 }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "row-2639",
-                    "data": [
-                        {
-                            "key": "scr_1774007715903",
-                            "data": {
-                                "type": "Custom Script",
-                                "width": 50,
-                                "height": 250,
-                                "params": {},
-                                "scriptId": "e38a88ad-6550-42dc-86b8-8cc149983726",
-                                "viewOptions": {
-                                    "type": "pie",
-                                    "commands": []
-                                }
-                            }
-                        },
-                        {
-                            "key": "text",
-                            "data": {
-                                "text": "[Marketplace Installed Packs](https://xsiam-csemea-10.xdr.eu.paloaltonetworks.com/configuration/market/installed)",
-                                "type": "Text",
-                                "width": 50,
-                                "height": 250,
-                                "markdownEnabled": true
-                            }
-                        }
-                    ]
-                },
-                {
-                    "id": "row-5564",
-                    "data": [
-                        {
-                            "key": "scr_1774007675706",
-                            "data": {
-                                "type": "Custom Script",
-                                "width": 50,
-                                "height": 250,
-                                "params": {},
-                                "scriptId": "815ec1ea-5807-4cdd-8771-4bdf1b369ee5",
-                                "viewOptions": {
-                                    "type": "pie",
-                                    "commands": []
-                                }
-                            }
-                        },
-                        {
-                            "key": "text",
-                            "data": {
-                                "text": "[User Management](https://xsiam-csemea-10.xdr.eu.paloaltonetworks.com/configuration/access-management/users)",
-                                "type": "Text",
-                                "width": 50,
-                                "height": 250,
-                                "markdownEnabled": true
                             }
                         }
                     ]
