@@ -23,7 +23,7 @@ def get_issue_id_by_external_id(external_id: str) -> int | None:
     }
 
     demisto.debug("get_issue_id_by_external_id: waiting 2 seconds for issue to be indexed")
-    time.sleep(2)
+    time.sleep(5)
 
     result = demisto.executeCommand(
         "core-api-post",
@@ -89,7 +89,7 @@ def main() -> None:
                 issue_url = f"{server_url}/issue-view/{issue_id}"
                 message = f"HealthCheck issue created successfully &rarr; [Open Issue Here #{issue_id}]({issue_url})"
             else:
-                message = "HealthCheck issue created successfully."
+                message = "HealthCheck issue created."
         else:
             message = "HealthCheck issue created successfully."
 

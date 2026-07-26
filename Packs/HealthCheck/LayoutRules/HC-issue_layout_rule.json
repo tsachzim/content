@@ -14,7 +14,7 @@
                 {
                     "SEARCH_FIELD": "alert_name",
                     "SEARCH_TYPE": "CONTAINS",
-                    "SEARCH_VALUE": "Healthcheck Report and BPA diagnostics"
+                    "SEARCH_VALUE": "System Diagnostics and Healthcheck Report"
                 }
             ]
         }

@@ -1,8 +1,8 @@
 {
     "id": "HealthCheck issue Layout",
-    "version": 3,
+    "version": 4,
     "cacheVersn": 0,
-    "modified": "2026-07-13T08:28:21.462636193Z",
+    "modified": "2026-07-13T11:18:03.133725786Z",
     "sizeInBytes": 0,
     "packID": "HealthCheck",
     "packName": "System Diagnostics and Health Check",
@@ -27,7 +27,7 @@
     "system": true,
     "locked": false,
     "group": "incident",
-    "detached": true,
+    "detached": false,
     "detailsV2": {
         "TypeName": "",
         "tabs": [
@@ -63,7 +63,7 @@
                                 "id": "8ec20e29-4012-4b40-aacc-df089ecb105b",
                                 "index": 0,
                                 "name": "Export Summary Data",
-                                "scriptId": "ba04336a-cfd0-4412-82c3-464e97b09db6",
+                                "scriptId": "HealthCheckExportIssueDataXSIAM",
                                 "sectionItemType": "button",
                                 "startCol": 0
                             }
@@ -438,20 +438,6 @@
                                 "index": 0,
                                 "sectionItemType": "field",
                                 "startCol": 0
-                            },
-                            {
-                                "args": {},
-                                "dropEffect": "move",
-                                "endCol": 6,
-                                "fieldId": "",
-                                "height": 44,
-                                "id": "d7c964cd-7904-4c26-ba77-3a3d12fba925",
-                                "index": 1,
-                                "listId": "t0nnuznjdy-18039634-de4f-44ff-8b7f-9c2091409161",
-                                "name": "Export Data",
-                                "scriptId": "HealthCheckExportSummaryData",
-                                "sectionItemType": "button",
-                                "startCol": 4
                             }
                         ],
                         "maxW": 3,
