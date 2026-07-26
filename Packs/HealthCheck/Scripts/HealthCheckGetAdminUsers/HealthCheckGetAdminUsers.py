@@ -55,12 +55,14 @@ def main():
 
         else:
             # Widget Path: Generate JSON for the dashboard UI chart
-            chart_data = [
-                {"name": "Total Admin Users", "data": [total_admins]},
-                {"name": "Inactive Admins (>30 days)", "data": [inactive_count]},
-            ]
+            chart_data = {
+                "stats": [
+                    {"name": "Active Admin Users", "data": [total_admins - inactive_count], "color": "rgb(0, 205, 51)"},
+                    {"name": "Inactive Admins (>30 days)", "data": [inactive_count], "color": "rgb(255, 144, 0)"},
+                ]
+            }
 
-            return_results({"Type": 1, "ContentsFormat": "json", "Contents": json.dumps(chart_data)})
+            return_results({"Type": 17, "ContentsFormat": "pie", "Contents": json.dumps(chart_data)})
 
     except Exception as e:
         return_error(f"Error: {str(e)}")

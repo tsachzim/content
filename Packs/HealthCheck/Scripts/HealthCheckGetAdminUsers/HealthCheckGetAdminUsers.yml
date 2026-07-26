@@ -29,4 +29,5 @@ signature: ""
 subtype: python3
 tags:
 - widget
+- dynamic-section
 type: python
