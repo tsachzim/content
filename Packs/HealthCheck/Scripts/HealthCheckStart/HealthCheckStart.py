@@ -23,7 +23,7 @@ def get_issue_id_by_external_id(external_id: str) -> int | None:
     }
 
     demisto.debug("get_issue_id_by_external_id: waiting 2 seconds for issue to be indexed")
-    time.sleep(5)
+    time.sleep(10)
 
     result = demisto.executeCommand(
         "core-api-post",

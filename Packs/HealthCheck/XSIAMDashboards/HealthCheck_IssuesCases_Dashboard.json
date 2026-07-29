@@ -14,7 +14,7 @@
                                 "type": "Custom XQL",
                                 "width": 50,
                                 "height": 400,
-                                "phrase": "config timeframe = 30d case_sensitive = false  | dataset = issues  |filter xdm.domain  != \"HEALTH\"| comp count() as Alerts by xdm.issue.detection.method  | sort desc Alerts \n\n\n\n| view graph type = pie subtype = full show_percentage = `false` xaxis = xdm.issue.detection.method yaxis = Alerts ",
+                                "phrase": "config timeframe = 30d case_sensitive = false  | dataset = issues  |filter xdm.domain  != \"HEALTH\"| comp count() as Alerts by xdm.issue.detection.method  | sort desc Alerts \n\n\n\n| view graph type = pie subtype = full show_percentage = `false` xaxis = xdm.issue.detection.method yaxis = Alerts //Healthcheck",
                                 "timeSpan": {
                                     "toTime": "now",
                                     "fromTime": "90d",
@@ -80,7 +80,7 @@
                                 "type": "Custom XQL",
                                 "width": 50,
                                 "height": 400,
-                                "phrase": "config timeframe = 30d case_sensitive = false | dataset = alerts | filter alert_source = ENUM.XDR_AGENT and action = ENUM.DETECTED__REPORTED_ | join type = inner (dataset = endpoints | fields endpoint_id, endpoint_name, assigned_prevention_policy) as ep ep.endpoint_id = endpoint_id | comp count() as events by assigned_prevention_policy, alert_name | sort desc events | limit 5",
+                                "phrase": "config timeframe = 30d case_sensitive = false | dataset = alerts | filter alert_source = ENUM.XDR_AGENT and action = ENUM.DETECTED__REPORTED_ | join type = inner (dataset = endpoints | fields endpoint_id, endpoint_name, assigned_prevention_policy) as ep ep.endpoint_id = endpoint_id | comp count() as events by assigned_prevention_policy, alert_name | sort desc events | limit 5 //Healthcheck",
                                 "timeSpan": {
                                     "toTime": "now",
                                     "fromTime": "30d",
@@ -123,7 +123,7 @@
                                 "type": "Custom XQL",
                                 "width": 100,
                                 "height": 400,
-                                "phrase": "config timeframe = 30d | dataset = issues | filter xdm.issue.status.resolution_reason != \"*\"  and xdm.issue.detection.method = \"CORRELATION\" | comp count() as count by xdm.issue.name | sort desc count | limit 10\n\n| view graph type = pie subtype = full show_callouts = `true` show_callouts_names = `true` xaxis = xdm.issue.name yaxis = count default_limit = `false` legend = `false` ",
+                                "phrase": "config timeframe = 30d | dataset = issues | filter xdm.issue.status.resolution_reason != \"*\"  and xdm.issue.detection.method = \"CORRELATION\" | comp count() as count by xdm.issue.name | sort desc count | limit 10\n\n| view graph type = pie subtype = full show_callouts = `true` show_callouts_names = `true` xaxis = xdm.issue.name yaxis = count default_limit = `false` legend = `false` //Healthcheck",
                                 "timeSpan": {
                                     "toTime": "now",
                                     "fromTime": "30d",
@@ -309,7 +309,7 @@
             "creation_time": 1774529134491,
             "description": "",
             "data": {
-                "phrase": "config timeframe = 30d case_sensitive = false | dataset = alerts | filter alert_source = ENUM.XDR_AGENT and action = ENUM.DETECTED__REPORTED_ | join type = inner (dataset = endpoints | fields endpoint_id, endpoint_name, assigned_prevention_policy) as ep ep.endpoint_id = endpoint_id | comp count() as events by assigned_prevention_policy, alert_name | sort desc events | limit 5",
+                "phrase": "config timeframe = 30d case_sensitive = false | dataset = alerts | filter alert_source = ENUM.XDR_AGENT and action = ENUM.DETECTED__REPORTED_ | join type = inner (dataset = endpoints | fields endpoint_id, endpoint_name, assigned_prevention_policy) as ep ep.endpoint_id = endpoint_id | comp count() as events by assigned_prevention_policy, alert_name | sort desc events | limit 5 //Healthcheck",
                 "timeSpan": {
                     "toTime": "now",
                     "fromTime": "30d",
@@ -348,7 +348,7 @@
             "creation_time": 1774529134112,
             "description": null,
             "data": {
-                "phrase": "config timeframe = 30d | dataset = issues | filter xdm.issue.status.resolution_reason != \"*\"  and xdm.issue.detection.method = \"CORRELATION\" | comp count() as count by xdm.issue.name | sort desc count | limit 10\n\n| view graph type = pie subtype = full show_callouts = `true` show_callouts_names = `true` xaxis = xdm.issue.name yaxis = count default_limit = `false` legend = `false` ",
+                "phrase": "config timeframe = 30d | dataset = issues | filter xdm.issue.status.resolution_reason != \"*\"  and xdm.issue.detection.method = \"CORRELATION\" | comp count() as count by xdm.issue.name | sort desc count | limit 10\n\n| view graph type = pie subtype = full show_callouts = `true` show_callouts_names = `true` xaxis = xdm.issue.name yaxis = count default_limit = `false` legend = `false` //Healthcheck",
                 "timeSpan": {
                     "toTime": "now",
                     "fromTime": "30d",
@@ -429,7 +429,7 @@
             "creation_time": 1774529134391,
             "description": "",
             "data": {
-                "phrase": "config timeframe = 30d case_sensitive = false  | dataset = issues  |filter xdm.domain  != \"HEALTH\"| comp count() as Alerts by xdm.issue.detection.method  | sort desc Alerts \n\n\n\n| view graph type = pie subtype = full show_percentage = `false` xaxis = xdm.issue.detection.method yaxis = Alerts ",
+                "phrase": "config timeframe = 30d case_sensitive = false  | dataset = issues  |filter xdm.domain  != \"HEALTH\"| comp count() as Alerts by xdm.issue.detection.method  | sort desc Alerts \n\n\n\n| view graph type = pie subtype = full show_percentage = `false` xaxis = xdm.issue.detection.method yaxis = Alerts //Healthcheck",
                 "timeSpan": {
                     "toTime": "now",
                     "fromTime": "30d",
