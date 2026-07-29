@@ -15,9 +15,9 @@ DASHBOARD_WIDGET_COUNT: dict[str, int] = {
 }
 RETRY_INTERVAL_SECONDS = 10
 QUERY_TEMPLATE = """dataset = xql_query_center_history
-| filter issuer = "{user_email}"
 | filter xql_query_source = "dashboard"
-| dedup xql_query_source_name"""
+| dedup xql_query_source_name
+| filter xql_query contains "Healthcheck\""""
 
 
 def extract_widget_name(source_name: str, widget_name_regex: str) -> str:
@@ -33,19 +33,6 @@ def extract_widget_name(source_name: str, widget_name_regex: str) -> str:
 
     # print(">>> extract_widget_name: No match found, using source_name as-is")
     return source_name
-
-
-def get_current_user_email():
-    """Get current user email."""
-    # print(">>> Step 1: Getting current user email")
-    result = demisto.executeCommand("getUsers", {"current": True})
-
-    if is_error(result):
-        raise ValueError(f"Failed to get user: {get_error(result)}")
-
-    user_email = result[0]["Contents"][0].get("id")
-    # print(f">>> User email: {user_email}")
-    return user_email
 
 
 def execute_xql_query(query, max_polls=30):
@@ -162,11 +149,11 @@ def create_html_file(markdown_content):
         demisto.debug(">>> create_html_file: Error creating HTML")
 
 
-def query_center_history_with_retry(user_email: str, expected_results_count: int):
+def query_center_history_with_retry(expected_results_count: int):
     """Query query center history with retry logic until expected results are found."""
     demisto.debug(f">>> query_center_history_with_retry: Expecting {expected_results_count} results")
 
-    query = QUERY_TEMPLATE.format(user_email=user_email)
+    query = QUERY_TEMPLATE
 
     for iteration in range(1, MAX_RETRY_ITERATIONS + 1):
         # print(
@@ -223,12 +210,9 @@ def main():
             return
         widget_name_regex = rf"{re.escape(dashboard_name)} - (.*?) xql_\d+"
 
-        # Step 1: Get user email
-        user_email = get_current_user_email()
-
-        # Step 2: Query query center history with validation and retry
-        # print(">>> Step 2: Querying query center history with validation")
-        query_history_results = query_center_history_with_retry(user_email, expected_results_count)
+        # Step 1: Query query center history with validation and retry
+        # print(">>> Step 1: Querying query center history with validation")
+        query_history_results = query_center_history_with_retry(expected_results_count)
 
         if not query_history_results:
             demisto.debug(">>> No dashboard queries found")

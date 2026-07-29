@@ -2,7 +2,7 @@
     "dashboards_data": [
         {
             "name": "Health Check - Agent and Asset",
-            "description": null,
+            "description": "Health Check Dashboard",
             "status": "ENABLED",
             "layout": [
                 {
@@ -117,7 +117,7 @@
                                 "type": "Custom XQL",
                                 "width": 50,
                                 "height": 400,
-                                "phrase": "config timeframe = 30d| dataset = endpoints | fields endpoint_id, operational_status, platform | filter operational_status != ENUM.PROTECTED | comp count() as total by operational_status, platform\n\n| view graph type = column subtype = grouped layout = horizontal show_callouts = `true` xaxis = platform yaxis = total series = operational_status default_limit = `false` seriescolor(\"UNPROTECTED\",\"#cb3614\") seriescolor(\"PARTIALLY_PROTECTED\",\"#ded6af\") ",
+                                "phrase": "config timeframe = 30d| dataset = endpoints | fields endpoint_id, operational_status, platform | filter operational_status != ENUM.PROTECTED | comp count() as total by operational_status, platform\n\n| view graph type = column subtype = grouped layout = horizontal show_callouts = `true` xaxis = platform yaxis = total series = operational_status default_limit = `false` seriescolor(\"UNPROTECTED\",\"#cb3614\") seriescolor(\"PARTIALLY_PROTECTED\",\"#ded6af\") //Healthcheck",
                                 "timeSpan": {
                                     "toTime": "now",
                                     "fromTime": "30d",
@@ -220,7 +220,7 @@
                                 "type": "Custom XQL",
                                 "width": 50,
                                 "height": 400,
-                                "phrase": "config timeframe =30d |dataset = endpoints | filter endpoint_status in (ENUM.DISCONNECTED) and endpoint_type in (ENUM.TYPE_SERVER) | filter timestamp_diff(current_time(), last_seen, \"DAY\") >= 20 | alter daysNotSeen = timestamp_diff(current_time(), last_seen, \"DAY\") | fields endpoint_name as name, endpoint_type as type, daysNotSeen, last_seen\n\n| view graph type = column subtype = grouped xaxis = name yaxis = daysNotSeen default_limit = `false` ",
+                                "phrase": "config timeframe =30d |dataset = endpoints | filter endpoint_status in (ENUM.DISCONNECTED) and endpoint_type in (ENUM.TYPE_SERVER) | filter timestamp_diff(current_time(), last_seen, \"DAY\") >= 20 | alter daysNotSeen = timestamp_diff(current_time(), last_seen, \"DAY\") | fields endpoint_name as name, endpoint_type as type, daysNotSeen, last_seen\n\n| view graph type = column subtype = grouped xaxis = name yaxis = daysNotSeen default_limit = `false` //Healthcheck",
                                 "timeSpan": {
                                     "toTime": "now",
                                     "fromTime": "30d",
@@ -529,7 +529,7 @@
                                 "width": 50,
                                 "height": 400,
                                 "params": [],
-                                "phrase": "dataset = endpoints | fields auto_upgrade_status  , endpoint_name \n| filter (`auto_upgrade_status` != STATUS_NOT_SUPPORTED) | comp count() as upgradestatuscount by auto_upgrade_status\n\n| view graph type = pie subtype = full show_callouts = `true` show_callouts_names = `true` xaxis = auto_upgrade_status yaxis = upgradestatuscount default_limit = `false` valuecolor(\"STATUS_NOT_CONFIGURED\",\"#ea1313\") legend = `false` ",
+                                "phrase": "dataset = endpoints | fields auto_upgrade_status  , endpoint_name \n| filter (`auto_upgrade_status` != STATUS_NOT_SUPPORTED) | comp count() as upgradestatuscount by auto_upgrade_status\n\n| view graph type = pie subtype = full show_callouts = `true` show_callouts_names = `true` xaxis = auto_upgrade_status yaxis = upgradestatuscount default_limit = `false` valuecolor(\"STATUS_NOT_CONFIGURED\",\"#ea1313\") legend = `false` //Healthcheck",
                                 "time_frame": {
                                     "relativeTime": 86400000
                                 },
@@ -609,7 +609,7 @@
                                 "type": "Custom XQL",
                                 "width": 100,
                                 "height": 400,
-                                "phrase": "config timeframe = 7d | dataset = endpoints | comp count() as scancount by scan_status\n| view graph type = pie subtype = full show_callouts = `true` show_callouts_names = `true` xaxis = scan_status yaxis = scancount default_limit = `false` legend = `false` ",
+                                "phrase": "config timeframe = 7d | dataset = endpoints | comp count() as scancount by scan_status\n| view graph type = pie subtype = full show_callouts = `true` show_callouts_names = `true` xaxis = scan_status yaxis = scancount default_limit = `false` legend = `false` //Healthcheck",
                                 "timeSpan": {
                                     "toTime": "now",
                                     "fromTime": "7d",
@@ -752,7 +752,7 @@
             "description": null,
             "data": {
                 "params": [],
-                "phrase": "dataset = endpoints | fields auto_upgrade_status  , endpoint_name \n| filter (`auto_upgrade_status` != STATUS_NOT_SUPPORTED) | comp count() as upgradestatuscount by auto_upgrade_status\n\n| view graph type = pie subtype = full show_callouts = `true` show_callouts_names = `true` xaxis = auto_upgrade_status yaxis = upgradestatuscount default_limit = `false` valuecolor(\"STATUS_NOT_CONFIGURED\",\"#ea1313\") legend = `false` ",
+                "phrase": "dataset = endpoints | fields auto_upgrade_status  , endpoint_name \n| filter (`auto_upgrade_status` != STATUS_NOT_SUPPORTED) | comp count() as upgradestatuscount by auto_upgrade_status\n\n| view graph type = pie subtype = full show_callouts = `true` show_callouts_names = `true` xaxis = auto_upgrade_status yaxis = upgradestatuscount default_limit = `false` valuecolor(\"STATUS_NOT_CONFIGURED\",\"#ea1313\") legend = `false` //Healthcheck",
                 "timeSpan": {
                     "toTime": "now",
                     "fromTime": "7d",
@@ -842,7 +842,7 @@
             "creation_time": 1773921179018,
             "description": "",
             "data": {
-                "phrase": "config timeframe = 30d| dataset = endpoints | fields endpoint_id, operational_status, platform | filter operational_status != ENUM.PROTECTED | comp count() as total by operational_status, platform\n\n| view graph type = column subtype = grouped layout = horizontal show_callouts = `true` xaxis = platform yaxis = total series = operational_status default_limit = `false` seriescolor(\"UNPROTECTED\",\"#cb3614\") seriescolor(\"PARTIALLY_PROTECTED\",\"#ded6af\") ",
+                "phrase": "config timeframe = 30d| dataset = endpoints | fields endpoint_id, operational_status, platform | filter operational_status != ENUM.PROTECTED | comp count() as total by operational_status, platform\n\n| view graph type = column subtype = grouped layout = horizontal show_callouts = `true` xaxis = platform yaxis = total series = operational_status default_limit = `false` seriescolor(\"UNPROTECTED\",\"#cb3614\") seriescolor(\"PARTIALLY_PROTECTED\",\"#ded6af\") //Healthcheck",
                 "timeSpan": {
                     "toTime": "now",
                     "fromTime": "30d",
@@ -941,7 +941,7 @@
             "creation_time": 1773921178903,
             "description": "",
             "data": {
-                "phrase": "config timeframe =30d |dataset = endpoints | filter endpoint_status in (ENUM.DISCONNECTED) and endpoint_type in (ENUM.TYPE_SERVER) | filter timestamp_diff(current_time(), last_seen, \"DAY\") >= 20 | alter daysNotSeen = timestamp_diff(current_time(), last_seen, \"DAY\") | fields endpoint_name as name, endpoint_type as type, daysNotSeen, last_seen\n\n| view graph type = column subtype = grouped xaxis = name yaxis = daysNotSeen default_limit = `false` ",
+                "phrase": "config timeframe =30d |dataset = endpoints | filter endpoint_status in (ENUM.DISCONNECTED) and endpoint_type in (ENUM.TYPE_SERVER) | filter timestamp_diff(current_time(), last_seen, \"DAY\") >= 20 | alter daysNotSeen = timestamp_diff(current_time(), last_seen, \"DAY\") | fields endpoint_name as name, endpoint_type as type, daysNotSeen, last_seen\n\n| view graph type = column subtype = grouped xaxis = name yaxis = daysNotSeen default_limit = `false` //Healthcheck",
                 "timeSpan": {
                     "toTime": "now",
                     "fromTime": "30d",
@@ -1007,7 +1007,7 @@
             "creation_time": 1773921178553,
             "description": null,
             "data": {
-                "phrase": "config timeframe = 7d | dataset = endpoints | comp count() as scancount by scan_status\n| view graph type = pie subtype = full show_callouts = `true` show_callouts_names = `true` xaxis = scan_status yaxis = scancount default_limit = `false` legend = `false` ",
+                "phrase": "config timeframe = 7d | dataset = endpoints | comp count() as scancount by scan_status\n| view graph type = pie subtype = full show_callouts = `true` show_callouts_names = `true` xaxis = scan_status yaxis = scancount default_limit = `false` legend = `false` //Healthcheck",
                 "timeSpan": {
                     "toTime": "now",
                     "fromTime": "7d",
